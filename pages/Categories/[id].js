@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import ServiceProvider from "../../components/ServiceCards";
 import styled from "styled-components";
-import { serviceProviders } from "@/lib/data.js";
-import { filterProviders } from "@/components/FilterService";
 import { categories } from "@/lib/data.js";
 
 const Header = styled.header`
@@ -81,7 +79,7 @@ const SubcategoryPage = () => {
     setFilterValue("");
   };
 
-  const filteredProviders = serviceProviders.filter((provider) => {
+  const filteredProviders = foundSubcategory.providers.filter((provider) => {
     if (filterType === "all") {
       return (
         provider.skills.toLowerCase().includes(filterValue.toLowerCase()) ||

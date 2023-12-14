@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { categories } from "@/lib/data";
+import styled from "styled-components";
 
 const buttonStyle = {
   backgroundColor: "#3498db",
@@ -24,6 +25,33 @@ const subcategoryStyle = {
   margin: "5px 0",
   borderRadius: "5px",
 };
+
+const CenteredButton = styled.button`
+  display: block;
+  margin: 20px auto;
+  padding: 15px 30px;
+  border-radius: 8px;
+  background-color: darkorange;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  text-decoration: none;
+  text-align: center;
+  outline: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ff7f00;
+    text-decoration: none;
+  }
+`;
+
+const CenteredLink = styled.span`
+  display: block;
+  text-align: center;
+  text-decoration: none;
+`;
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -66,7 +94,7 @@ const App = () => {
                 {category.subcategories.map((subcategory) => (
                   <li key={subcategory.id} style={subcategoryStyle}>
                     <Link href={`/Categories/${subcategory.id}`}>
-                      {subcategory.name}
+                      {subcategory.name} &rarr;
                     </Link>{" "}
                   </li>
                 ))}
@@ -75,6 +103,11 @@ const App = () => {
           </li>
         ))}
       </ul>
+      <Link href="/dashboard/services/create">
+        <CenteredButton>
+          <CenteredLink>Make a Service Offer</CenteredLink>
+        </CenteredButton>
+      </Link>
     </div>
   );
 };
