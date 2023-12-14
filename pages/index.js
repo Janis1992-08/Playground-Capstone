@@ -1,20 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-
-const categories = [
-  {
-    name: "Technology & IT",
-    subcategories: ["Web Development", "Graphic Design", "Coding Assistance"],
-  },
-  {
-    name: "Home Services",
-    subcategories: ["Plumbing", "Electrical", "Cleaning"],
-  },
-  {
-    name: "Language Exchange",
-    subcategories: ["English", "Spanish", "French"],
-  },
-];
+import { categories } from "@/lib/data";
 
 const buttonStyle = {
   backgroundColor: "#3498db",
@@ -42,8 +28,10 @@ const subcategoryStyle = {
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category === selectedCategory ? null : category);
+  const handleCategoryClick = (categoryId) => {
+    setSelectedCategory((prevSelectedCategory) =>
+      prevSelectedCategory === categoryId ? null : categoryId
+    );
   };
 
   return (
@@ -52,22 +40,22 @@ const App = () => {
         ServiceCircle
       </h1>
       <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-        Finde your perfect Service-Match
+        Find your perfect Service-Match
       </h2>
       <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
         {categories.map((category) => (
-          <li key={category.name} style={{ marginBottom: "10px" }}>
+          <li key={category.id} style={{ marginBottom: "10px" }}>
             <button
-              onClick={() => handleCategoryClick(category)}
+              onClick={() => handleCategoryClick(category.id)}
               style={
-                selectedCategory === category
+                selectedCategory === category.id
                   ? selectedButtonStyle
                   : buttonStyle
               }
             >
               {category.name}
             </button>
-            {selectedCategory === category && (
+            {selectedCategory === category.id && (
               <ul
                 style={{
                   listStyleType: "none",
@@ -75,9 +63,11 @@ const App = () => {
                   margin: 0,
                 }}
               >
-                {category.subcategories.map((providerCards) => (
-                  <li key={providerCards.name} style={subcategoryStyle}>
-                    <Link href={`/ProviderCards`}>{providerCards}</Link>
+                {category.subcategories.map((subcategory) => (
+                  <li key={subcategory.id} style={subcategoryStyle}>
+                    <Link href={`/Categories/${subcategory.id}`}>
+                      {subcategory.name}
+                    </Link>{" "}
                   </li>
                 ))}
               </ul>
