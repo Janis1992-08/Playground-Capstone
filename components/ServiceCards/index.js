@@ -1,4 +1,26 @@
 import { useState } from "react";
+import styled from "styled-components";
+
+const ServiceProviderWrapper = styled.div`
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+`;
+
+const ServiceButton = styled.button`
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+`;
+
+const ServiceDetails = styled.div`
+  margin-top: 10px;
+`;
 
 export default function ServiceProvider({
   firstName,
@@ -15,7 +37,7 @@ export default function ServiceProvider({
   };
 
   return (
-    <div className="service-provider">
+    <ServiceProviderWrapper>
       <h2>
         {firstName} {lastName}
       </h2>
@@ -26,20 +48,20 @@ export default function ServiceProvider({
         <strong>Needs:</strong> {needs}
       </p>
 
-      {showContactInfo ? (
-        <div>
+      {showContactInfo && (
+        <ServiceDetails>
           <p>
             <strong>Email:</strong> {email}
           </p>
           <p>
             <strong>Phone:</strong> {phone}
           </p>
-        </div>
-      ) : null}
+        </ServiceDetails>
+      )}
 
-      <button onClick={toggleContactInfo}>
+      <ServiceButton type="button" onClick={toggleContactInfo}>
         {showContactInfo ? "Hide Contact" : "Show Contact"}
-      </button>
-    </div>
+      </ServiceButton>
+    </ServiceProviderWrapper>
   );
 }

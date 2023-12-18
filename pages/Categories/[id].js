@@ -59,7 +59,7 @@ const FilterLabel = styled.label`
 const FilterInput = styled.input`
   margin-right: 10px;
 `;
-const SubcategoryPage = () => {
+const SubcategoryPage = ({ serviceCards }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -79,7 +79,11 @@ const SubcategoryPage = () => {
     setFilterValue("");
   };
 
-  const filteredProviders = foundSubcategory.providers.filter((provider) => {
+  const filteredServiceCards = serviceCards.filter(
+    (card) => card.subcategory === foundSubcategory.name
+  );
+
+  const filteredProviders = filteredServiceCards.filter((provider) => {
     if (filterType === "all") {
       return (
         provider.skills.toLowerCase().includes(filterValue.toLowerCase()) ||
@@ -126,15 +130,15 @@ const SubcategoryPage = () => {
 
       <main>
         <CardWrapper>
-          {filteredProviders.map((provider) => (
-            <Card key={provider.id}>
+          {filteredProviders.map((card) => (
+            <Card key={card.id}>
               <ServiceProvider
-                firstName={provider.firstName}
-                lastName={provider.lastName}
-                skills={provider.skills}
-                needs={provider.needs}
-                email={provider.email}
-                phone={provider.phone}
+                firstName={card.firstName}
+                lastName={card.lastName}
+                skills={card.skills}
+                needs={card.needs}
+                email={card.email}
+                phone={card.phone}
               />
             </Card>
           ))}

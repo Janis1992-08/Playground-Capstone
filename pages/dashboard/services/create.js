@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { categories } from "@/lib/data";
 import Link from "next/link";
-import ServiceProvider from "@/components/ServiceCards";
+//import ServiceProvider from "@/components/ServiceCards";
+import useLocalStorageState from "use-local-storage-state";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -61,7 +62,10 @@ const Card = styled.div`
   }
 `;
 
-export default function CreateServiceCardForm() {
+export default function CreateServiceCardForm({
+  serviceCards,
+  setServiceCards,
+}) {
   // Initalisieren des anfänglichen Zustandes des Formulars bzw. der einzelnen Eingabefelder.
   const initialFormData = {
     firstName: "",
@@ -75,7 +79,9 @@ export default function CreateServiceCardForm() {
   };
 
   const [formData, setFormData] = useState({ ...initialFormData }); // Zustand des Formulars ist hiermit leer.
-  const [serviceCards, setServiceCards] = useState([]); // Hier werden die ServiceCards gespeichert. Alte + Neue.
+  /*  const [serviceCards, setServiceCards] = useLocalStorageState("serviceCards", {
+    defaultValue: [],
+  }); */ // Hier werden die ServiceCards gespeichert. Alte + Neue.
 
   const handleChange = (event) => {
     const { name, value } = event.target; // name z.B. firstName und der tatsächlich eingegebene Value wie z.b. Joe werden hier destrukturiert auf das Ereignis "Eingabe".
@@ -180,19 +186,6 @@ export default function CreateServiceCardForm() {
         </SelectField>
 
         <Button type="submit"> Create Service Card</Button>
-
-        {serviceCards.map((provider) => (
-          <Card key={provider.id}>
-            <ServiceProvider
-              firstName={provider.firstName}
-              lastName={provider.lastName}
-              skills={provider.skills}
-              needs={provider.needs}
-              email={provider.email}
-              phone={provider.phone}
-            />
-          </Card>
-        ))}
       </FormWrapper>
     </>
   );
