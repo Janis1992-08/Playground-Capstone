@@ -4,6 +4,7 @@ import Link from "next/link";
 import ServiceProvider from "../../components/ServiceCards";
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
+import FavoriteButton from "@/components/FavoriteButton";
 
 const Header = styled.header`
   background-color: #f0f0f0;
@@ -41,11 +42,6 @@ const Card = styled.div`
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
   }
 `;
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const FilterControls = styled.div`
   display: flex;
@@ -59,7 +55,7 @@ const FilterLabel = styled.label`
 const FilterInput = styled.input`
   margin-right: 10px;
 `;
-const SubcategoryPage = ({ serviceCards }) => {
+const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -98,11 +94,9 @@ const SubcategoryPage = ({ serviceCards }) => {
   return (
     <>
       <Header>
-        <HeaderWrapper>
-          <Link href="/">
-            <BackLink> &larr; {foundSubcategory.name}</BackLink>
-          </Link>
-        </HeaderWrapper>
+        <Link href="/">
+          <BackLink> &larr; {foundSubcategory.name}</BackLink>
+        </Link>
         <FilterControls>
           <FilterLabel>
             Filter by:
@@ -132,6 +126,10 @@ const SubcategoryPage = ({ serviceCards }) => {
         <CardWrapper>
           {filteredProviders.map((card) => (
             <Card key={card.id}>
+              <FavoriteButton
+                onClick={() => onToggleFavorite(card.id)}
+                isFavorite={favorites.includes(card.id)}
+              />
               <ServiceProvider
                 firstName={card.firstName}
                 lastName={card.lastName}

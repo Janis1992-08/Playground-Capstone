@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { categories } from "@/lib/data";
 import styled from "styled-components";
+import FavoritesPage from "./favoritesPage";
 
 const buttonStyle = {
   backgroundColor: "#3498db",
@@ -106,6 +107,20 @@ const Homepage = () => {
       <Link href="/dashboard/services/create">
         <CenteredButton>
           <CenteredLink>Make a Service Offer</CenteredLink>
+        </CenteredButton>
+      </Link>
+      <Link
+        href="/favoritesPage"
+        render={() => (
+          <FavoritesPage
+            favoriteCards={yourServiceCards.filter((card) =>
+              favorites.includes(card.id)
+            )}
+          />
+        )}
+      >
+        <CenteredButton>
+          <CenteredLink>Manage your Favorites</CenteredLink>
         </CenteredButton>
       </Link>
     </div>

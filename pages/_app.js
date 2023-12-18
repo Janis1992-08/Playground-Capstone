@@ -10,6 +10,19 @@ export default function App({ Component, pageProps }) {
     setServiceCards(newServiceCards);
   };
 
+  const [favorites, setFavorites] = useLocalStorageState("favorites", {
+    defaultValue: [],
+  });
+
+  function handleToggleFavorite(serviceCardId) {
+    const isFavorite = favorites.includes(serviceCardId);
+    if (isFavorite) {
+      setFavorites(favorites.filter((id) => id !== serviceCardId));
+    } else {
+      setFavorites([...favorites, serviceCardId]);
+    }
+  }
+
   return (
     <>
       <GlobalStyle />
@@ -18,6 +31,8 @@ export default function App({ Component, pageProps }) {
         serviceCards={serviceCards}
         setServiceCards={setServiceCards}
         onServiceCardsChange={handleServiceCardsChange}
+        favorites={favorites}
+        onToggleFavorite={handleToggleFavorite}
       />
     </>
   );

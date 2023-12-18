@@ -35,7 +35,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const BackLink = styled.a`
+const BackLink = styled.BackLink`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
@@ -47,18 +47,6 @@ const BackLink = styled.a`
 
   &:hover {
     background-color: #0056b3;
-  }
-`;
-const Card = styled.div`
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  width: 300px;
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -81,7 +69,7 @@ export default function CreateServiceCardForm({
   const [formData, setFormData] = useState({ ...initialFormData }); // Zustand des Formulars ist hiermit leer.
   /*  const [serviceCards, setServiceCards] = useLocalStorageState("serviceCards", {
     defaultValue: [],
-  }); */ // Hier werden die ServiceCards gespeichert. Alte + Neue.
+  }); */
 
   const handleChange = (event) => {
     const { name, value } = event.target; // name z.B. firstName und der tatsächlich eingegebene Value wie z.b. Joe werden hier destrukturiert auf das Ereignis "Eingabe".
