@@ -33,7 +33,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const BackLink = styled.p`
+const Headline = styled.p`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
@@ -89,7 +89,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
   return (
     <>
       <Link href="/">
-        <BackLink>&larr; Back to Categories</BackLink>
+        <Headline>&larr; Back to Categories</Headline>
       </Link>
 
       <FormWrapper onSubmit={handleSubmit}>

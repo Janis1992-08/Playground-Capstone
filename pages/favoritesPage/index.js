@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FavoriteButton from "@/components/FavoriteButton";
 import Link from "next/link";
 
-const BackLink = styled.h1`
+const Headline = styled.p`
   color: #333;
   text-decoration: none;
   font-weight: bold;
@@ -42,7 +42,7 @@ const FavoritesPage = ({ favorites, serviceCards, onToggleFavorite }) => {
   return (
     <>
       <Link href="/">
-        <BackLink> &larr; Favorites</BackLink>
+        <Headline> &larr; Favorites</Headline>
       </Link>
 
       <main>
