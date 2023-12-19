@@ -4,7 +4,7 @@ import Link from "next/link";
 import ServiceProvider from "../../components/ServiceCards";
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
-import FavoriteButton from "@/components/FavoriteButton";
+import FavoriteButton from "@/components/FavoriteButton/index.js";
 
 const Header = styled.header`
   background-color: #f0f0f0;

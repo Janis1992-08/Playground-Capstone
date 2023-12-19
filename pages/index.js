@@ -54,6 +54,26 @@ const CenteredLink = styled.span`
   text-decoration: none;
 `;
 
+const ShowFavoritesButton = styled.button`
+  display: block;
+  margin: 20px auto;
+  padding: 15px 30px;
+  border-radius: 25px;
+  background-color: gray;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+  outline: none;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ff7f00;
+    text-decoration: none;
+  }
+`;
+
 const Homepage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -119,9 +139,9 @@ const Homepage = () => {
           />
         )}
       >
-        <CenteredButton>
-          <CenteredLink>Manage your Favorites</CenteredLink>
-        </CenteredButton>
+        <ShowFavoritesButton>
+          <CenteredLink>Show my Favorites</CenteredLink>
+        </ShowFavoritesButton>
       </Link>
     </div>
   );

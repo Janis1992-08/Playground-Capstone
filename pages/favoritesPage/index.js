@@ -50,7 +50,7 @@ const FavoritesPage = ({ favorites, serviceCards, onToggleFavorite }) => {
           {favoriteCards.map((card) => (
             <Card key={card.id}>
               <FavoriteButton
-                onToggleFavorite={onToggleFavorite}
+                onClick={() => onToggleFavorite(card.id)}
                 isFavorite={favorites.includes(card.id)}
               />
               <ServiceProvider
