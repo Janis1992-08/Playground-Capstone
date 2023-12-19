@@ -33,7 +33,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const BackLink = styled.BackLink`
+const BackLink = styled.p`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
