@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { categories } from "@/lib/data";
 import Link from "next/link";
-//import ServiceProvider from "@/components/ServiceCards";
-import useLocalStorageState from "use-local-storage-state";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -62,10 +60,7 @@ const Card = styled.div`
   }
 `;
 
-export default function CreateServiceCardForm({
-  serviceCards,
-  setServiceCards,
-}) {
+export default function CreateServiceCardForm({ handleAddServiceCards }) {
   // Initalisieren des anfänglichen Zustandes des Formulars bzw. der einzelnen Eingabefelder.
   const initialFormData = {
     firstName: "",
@@ -92,11 +87,15 @@ export default function CreateServiceCardForm({
     event.preventDefault();
 
     const newServiceCard = { ...formData, id: uuidv4() };
-    setServiceCards([...serviceCards, newServiceCard]);
-    setFormData({ ...initialFormData });
+    handleAddServiceCards(newServiceCard);
 
     const toastMessage = `The Service Card is created and you can find it in the assigned subcategory: ${formData.subcategory}`;
     alert(toastMessage);
+
+    resetForm();
+  };
+  const resetForm = () => {
+    setFormData({ ...initialFormData });
   };
 
   return (

@@ -33,8 +33,10 @@ const Card = styled.div`
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 20px;
+  padding: 10px;
   width: 300px;
+  position: relative;
+  text-align: center;
   transition: box-shadow 0.3s ease;
 
   &:hover {
@@ -60,6 +62,8 @@ const FilterInput = styled.input`
   margin-right: 10px;
 `;
 const SubcategoryPage = ({ serviceCards }) => {
+  const [filterType, setFilterType] = useState("all");
+  const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
   const { id } = router.query;
 
@@ -71,8 +75,6 @@ const SubcategoryPage = ({ serviceCards }) => {
   if (!foundSubcategory) {
     return <div>Unterkategorie nicht gefunden</div>;
   }
-  const [filterType, setFilterType] = useState("all");
-  const [filterValue, setFilterValue] = useState("");
 
   const handleFilterTypeChange = (newFilterType) => {
     setFilterType(newFilterType);
