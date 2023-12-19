@@ -1,10 +1,10 @@
 import React from 'react';
 
 const StarRating = ({ rating, setRating }) => {
-  // تعريف أنماط CSS المضمنة
+  
   const starStyle = (isRated) => ({
     cursor: 'pointer',
-    color: isRated ? 'gold' : 'gray', // اللون الذهبي للنجوم المقيمة
+    color: isRated ? 'gold' : 'gray',
   });
 
   return (
@@ -14,7 +14,7 @@ const StarRating = ({ rating, setRating }) => {
         return (
           <span
             key={ratingValue}
-            style={starStyle(ratingValue <= rating)} // استخدام الأنماط المضمنة
+            style={starStyle(ratingValue <= rating)}
             onClick={() => setRating(ratingValue)}
           >
             &#9733;

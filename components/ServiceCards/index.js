@@ -36,7 +36,6 @@ export default function ServiceProvider({
         <strong>Needs:</strong> {needs}
       </p>
 
-      {/* مكون التقييم بالنجوم */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <StarRating rating={rating} setRating={setRating} />
         <button onClick={handleRating}>Rate Me</button>
