@@ -56,6 +56,9 @@ const FilterInput = styled.input`
   margin-right: 10px;
 `;
 const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
+  const [filterType, setFilterType] = useState("all");
+  const [filterValue, setFilterValue] = useState("");
+
   const router = useRouter();
   const { id } = router.query;
 
@@ -67,8 +70,6 @@ const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
   if (!foundSubcategory) {
     return <div>Unterkategorie nicht gefunden</div>;
   }
-  const [filterType, setFilterType] = useState("all");
-  const [filterValue, setFilterValue] = useState("");
 
   const handleFilterTypeChange = (newFilterType) => {
     setFilterType(newFilterType);
