@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 export default function ServiceProvider({
+  id,
   firstName,
   lastName,
   skills,
   needs,
   email,
   phone,
+  onDelete
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
 
@@ -16,30 +18,21 @@ export default function ServiceProvider({
 
   return (
     <div className="service-provider">
-      <h2>
-        {firstName} {lastName}
-      </h2>
-      <p>
-        <strong>Skills:</strong> {skills}
-      </p>
-      <p>
-        <strong>Needs:</strong> {needs}
-      </p>
+      <h2>{firstName} {lastName}</h2>
+      <p><strong>Skills:</strong> {skills}</p>
+      <p><strong>Needs:</strong> {needs}</p>
 
-      {showContactInfo ? (
+      {showContactInfo && (
         <div>
-          <p>
-            <strong>Email:</strong> {email}
-          </p>
-          <p>
-            <strong>Phone:</strong> {phone}
-          </p>
+          <p><strong>Email:</strong> {email}</p>
+          <p><strong>Phone:</strong> {phone}</p>
         </div>
-      ) : null}
+      )}
 
       <button onClick={toggleContactInfo}>
         {showContactInfo ? "Hide Contact" : "Show Contact"}
       </button>
+      <button onClick={() => onDelete(id)}>Delete</button>
     </div>
   );
 }

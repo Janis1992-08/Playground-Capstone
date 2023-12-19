@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import { categories } from "@/lib/data.js";
-import ServiceProvider from "../components/ServiceCard/ServiceCard";
+import ServiceProvider from "../components/serviceCards";
 
 const FormWrapper = styled.form`
   display: flex;

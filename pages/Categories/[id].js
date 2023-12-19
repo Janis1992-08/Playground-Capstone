@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ServiceProvider from "../../components/ServiceCards";
+import ServiceProvider from "../../components/ServiceCards"; // تأكد من صحة المسار
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
 
@@ -36,11 +36,11 @@ const Card = styled.div`
   padding: 20px;
   width: 300px;
   transition: box-shadow 0.3s ease;
-
   &:hover {
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
   }
 `;
+
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -59,27 +59,29 @@ const FilterLabel = styled.label`
 const FilterInput = styled.input`
   margin-right: 10px;
 `;
+
 const SubcategoryPage = () => {
   const router = useRouter();
   const { id } = router.query;
-
-  // Find the subcategory based on the ID in the categories
-  const foundSubcategory = categories
-    .flatMap((category) => category.subcategories)
-    .find((sub) => sub.id === id);
-
-  if (!foundSubcategory) {
-    return <div>Unterkategorie nicht gefunden</div>;
-  }
+  const [providers, setProviders] = useState([]);
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
 
-  const handleFilterTypeChange = (newFilterType) => {
-    setFilterType(newFilterType);
-    setFilterValue("");
+  useEffect(() => {
+    const foundSubcategory = categories
+      .flatMap((category) => category.subcategories)
+      .find((sub) => sub.id === id);
+
+    if (foundSubcategory) {
+      setProviders(foundSubcategory.providers);
+    }
+  }, [id]);
+
+  const handleDelete = (providerId) => {
+    setProviders((prevProviders) => prevProviders.filter(provider => provider.id !== providerId));
   };
 
-  const filteredProviders = foundSubcategory.providers.filter((provider) => {
+  const filteredProviders = providers.filter((provider) => {
     if (filterType === "all") {
       return (
         provider.skills.toLowerCase().includes(filterValue.toLowerCase()) ||
@@ -96,32 +98,32 @@ const SubcategoryPage = () => {
       <Header>
         <HeaderWrapper>
           <Link href="/">
-            <BackLink> &larr; {foundSubcategory.name}</BackLink>
+            <BackLink> &larr; Back to Categories</BackLink>
           </Link>
+          <FilterControls>
+            <FilterLabel>
+              Filter by:
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="skills">Skills</option>
+                <option value="needs">Needs</option>
+              </select>
+            </FilterLabel>
+            <FilterInput
+              type="text"
+              placeholder={`Enter ${
+                filterType === "all"
+                  ? "skills or needs"
+                  : filterType.toLowerCase()
+              }...`}
+              value={filterValue}
+              onChange={(e) => setFilterValue(e.target.value)}
+            />
+          </FilterControls>
         </HeaderWrapper>
-        <FilterControls>
-          <FilterLabel>
-            Filter by:
-            <select
-              value={filterType}
-              onChange={(e) => handleFilterTypeChange(e.target.value)}
-            >
-              <option value="all"> All</option>
-              <option value="skills"> Skills</option>
-              <option value="needs"> Needs</option>
-            </select>
-          </FilterLabel>
-          <FilterInput
-            type="text"
-            placeholder={`Enter ${
-              filterType === "all"
-                ? "skills or needs"
-                : filterType.toLowerCase()
-            }...`}
-            value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
-          />
-        </FilterControls>
       </Header>
 
       <main>
@@ -129,12 +131,14 @@ const SubcategoryPage = () => {
           {filteredProviders.map((provider) => (
             <Card key={provider.id}>
               <ServiceProvider
+                id={provider.id}
                 firstName={provider.firstName}
                 lastName={provider.lastName}
                 skills={provider.skills}
                 needs={provider.needs}
                 email={provider.email}
                 phone={provider.phone}
+                onDelete={() => handleDelete(provider.id)}
               />
             </Card>
           ))}
