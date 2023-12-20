@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import StarRating from "../StarRating";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -31,9 +32,19 @@ export default function ServiceProvider({
   phone,
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [isRated, setIsRated] = useState(false);
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
+  };
+
+  const handleRating = () => {
+    if (!isRated) {
+      setIsRated(true);
+    } else {
+      alert("You have already rated.");
+    }
   };
 
   return (
@@ -47,6 +58,10 @@ export default function ServiceProvider({
       <p>
         <strong>Needs:</strong> {needs}
       </p>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <StarRating rating={rating} setRating={setRating} />
+        <button onClick={handleRating}>Rate Me</button>
+      </div>
 
       {showContactInfo && (
         <ServiceDetails>
