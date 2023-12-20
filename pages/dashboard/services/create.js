@@ -1,8 +1,8 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
 import { categories } from "@/lib/data";
 import Link from "next/link";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -33,7 +33,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const BackLink = styled.a`
+const Headline = styled.a`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
@@ -47,21 +47,8 @@ const BackLink = styled.a`
     background-color: #0056b3;
   }
 `;
-const Card = styled.div`
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  width: 300px;
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
-  }
-`;
 
 export default function CreateServiceCardForm({ handleAddServiceCards }) {
-  // Initalisieren des anfänglichen Zustandes des Formulars bzw. der einzelnen Eingabefelder.
   const initialFormData = {
     firstName: "",
     lastName: "",
@@ -73,14 +60,11 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
     subcategory: "",
   };
 
-  const [formData, setFormData] = useState({ ...initialFormData }); // Zustand des Formulars ist hiermit leer.
-  /*  const [serviceCards, setServiceCards] = useLocalStorageState("serviceCards", {
-    defaultValue: [],
-  }); */ // Hier werden die ServiceCards gespeichert. Alte + Neue.
+  const [formData, setFormData] = useState({ ...initialFormData });
 
   const handleChange = (event) => {
-    const { name, value } = event.target; // name z.B. firstName und der tatsächlich eingegebene Value wie z.b. Joe werden hier destrukturiert auf das Ereignis "Eingabe".
-    setFormData({ ...formData, [name]: value }); // Kopie der bestehenden Eingaben + neuer Value im nächsten name InputField führt zu dem neuen formData Zustand.
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (event) => {
@@ -94,6 +78,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
 
     resetForm();
   };
+
   const resetForm = () => {
     setFormData({ ...initialFormData });
   };
@@ -101,7 +86,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
   return (
     <>
       <Link href="/">
-        <BackLink>&larr; Back to Categories</BackLink>
+        <Headline>&larr; Back to Categories</Headline>
       </Link>
 
       <FormWrapper onSubmit={handleSubmit}>
@@ -111,7 +96,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="firstName"
           name="firstName"
           value={formData.firstName}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
         <label htmlFor="lastName">Last Name: </label>
@@ -120,7 +105,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="lastName"
           name="lastName"
           value={formData.lastName}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
         <label htmlFor="skills">Skills: </label>
@@ -129,7 +114,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="skills"
           name="skills"
           value={formData.skills}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
 
@@ -139,7 +124,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="needs"
           name="needs"
           value={formData.needs}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
 
@@ -149,7 +134,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="email"
           name="email"
           value={formData.email}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
 
@@ -159,11 +144,16 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           id="phone"
           name="phone"
           value={formData.phone}
-          onChange={handleChange}
+          onChange={(event) => handleChange(event)}
           required
         />
 
-        <SelectField name="category" onChange={handleChange} required>
+        <SelectField
+          name="category"
+          onChange={(event) => handleChange(event)}
+          required
+          value={formData.category}
+        >
           <option value="">Select Category</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -172,7 +162,11 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
           ))}
         </SelectField>
 
-        <SelectField name="subcategory" onChange={handleChange} required>
+        <SelectField
+          name="subcategory"
+          onChange={(event) => handleChange(event)}
+          required
+        >
           <option value="">Select Subcategory</option>
           {formData.category &&
             categories
