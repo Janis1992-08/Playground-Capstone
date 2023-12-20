@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
 import { categories } from "@/lib/data";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const buttonStyle = {
   backgroundColor: "#3498db",
@@ -47,7 +47,7 @@ const CenteredButton = styled.button`
   }
 `;
 
-const DarkModeButton = styled.button`
+/* const DarkModeButton = styled.button`
   position: absolute; 
   top: 10px; 
   right: 10px; 
@@ -58,9 +58,41 @@ const DarkModeButton = styled.button`
   border: "none";
   borderRadius: "5px";
   cursor: "pointer";
+`; */
+
+const SwitchButton = styled.label`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
 `;
 
-const App = ({ toggleTheme }) => {
+const SwitchInput = styled.input`
+  margin-left: 10px;
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #3498db;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease;
+    transform: ${({ checked }) =>
+      checked ? "translateX(20px)" : "translateX(0)"};
+  }
+`;
+
+const App = ({ toggleTheme, theme }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (categoryId) => {
@@ -70,7 +102,13 @@ const App = ({ toggleTheme }) => {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", position: "relative" }}>
+    <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+        position: "relative",
+      }}
+    >
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
         ServiceCircle
       </h1>
@@ -115,9 +153,14 @@ const App = ({ toggleTheme }) => {
           <span>Make a Service Offer</span>
         </CenteredButton>
       </Link>
-      <DarkModeButton onClick={toggleTheme}>
+      <SwitchButton>
         Dark Mode
-      </DarkModeButton>
+        <SwitchInput
+          type="checkbox"
+          checked={theme === "dark"}
+          onChange={toggleTheme}
+        />
+      </SwitchButton>
     </div>
   );
 };
