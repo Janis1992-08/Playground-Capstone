@@ -129,16 +129,7 @@ const Homepage = () => {
           <CenteredLink>Make a Service Offer</CenteredLink>
         </CenteredButton>
       </Link>
-      <Link
-        href="/favoritesPage"
-        render={() => (
-          <FavoritesPage
-            favoriteCards={yourServiceCards.filter((card) =>
-              favorites.includes(card.id)
-            )}
-          />
-        )}
-      >
+      <Link href="/favoritesPage">
         <ShowFavoritesButton>
           <CenteredLink>Show my Favorites</CenteredLink>
         </ShowFavoritesButton>
