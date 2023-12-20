@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { categories } from "@/lib/data";
-import styled from "styled-components";
+import styled from 'styled-components';
 
+// تعريف الأنماط المحلية
 const buttonStyle = {
   backgroundColor: "#3498db",
   color: "white",
@@ -47,13 +48,8 @@ const CenteredButton = styled.button`
   }
 `;
 
-const CenteredLink = styled.span`
-  display: block;
-  text-align: center;
-  text-decoration: none;
-`;
-
-const App = () => {
+// المكون الرئيسي للصفحة
+const App = ({ toggleTheme }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (categoryId) => {
@@ -105,9 +101,12 @@ const App = () => {
       </ul>
       <Link href="/dashboard/services/create">
         <CenteredButton>
-          <CenteredLink>Make a Service Offer</CenteredLink>
+          <span>Make a Service Offer</span>
         </CenteredButton>
       </Link>
+      <button onClick={toggleTheme} style={{ marginTop: '20px', padding: '10px', fontSize: '16px' }}>
+        Toggle Dark Mode
+      </button>
     </div>
   );
 };
