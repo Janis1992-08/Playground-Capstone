@@ -19,21 +19,21 @@ export default function ServiceProvider({
       <h2>
         {firstName} {lastName}
       </h2>
-      <p>
+      <h4>
         <strong>Skills:</strong> {skills}
-      </p>
-      <p>
+      </h4>
+      <h4>
         <strong>Needs:</strong> {needs}
-      </p>
+      </h4>
 
       {showContactInfo ? (
         <div>
-          <p>
+          <h5>
             <strong>Email:</strong> {email}
-          </p>
-          <p>
+          </h5>
+          <h6>
             <strong>Phone:</strong> {phone}
-          </p>
+          </h6>
         </div>
       ) : null}
 

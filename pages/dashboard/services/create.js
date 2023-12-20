@@ -48,6 +48,7 @@ const BackLink = styled.a`
     background-color: #0056b3;
   }
 `;
+
 const Card = styled.div`
   background-color: #fff;
   border: 1px solid #ccc;

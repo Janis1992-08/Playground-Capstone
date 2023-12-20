@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { categories } from "@/lib/data";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const buttonStyle = {
   backgroundColor: "#3498db",
@@ -47,13 +47,20 @@ const CenteredButton = styled.button`
   }
 `;
 
-const CenteredLink = styled.span`
-  display: block;
-  text-align: center;
-  text-decoration: none;
+const DarkModeButton = styled.button`
+  position: absolute; 
+  top: 10px; 
+  right: 10px; 
+  padding: 10px;
+  fontSize: '16px';
+  backgroundColor: "#3498db";
+  color: "white";
+  border: "none";
+  borderRadius: "5px";
+  cursor: "pointer";
 `;
 
-const App = () => {
+const App = ({ toggleTheme }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (categoryId) => {
@@ -63,13 +70,13 @@ const App = () => {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px", position: "relative" }}>
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
         ServiceCircle
       </h1>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+      <h3 style={{ textAlign: "center", marginBottom: "20px" }}>
         Find your perfect Service-Match
-      </h2>
+      </h3>
       <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
         {categories.map((category) => (
           <li key={category.id} style={{ marginBottom: "10px" }}>
@@ -105,9 +112,12 @@ const App = () => {
       </ul>
       <Link href="/dashboard/services/create">
         <CenteredButton>
-          <CenteredLink>Make a Service Offer</CenteredLink>
+          <span>Make a Service Offer</span>
         </CenteredButton>
       </Link>
+      <DarkModeButton onClick={toggleTheme}>
+        Dark Mode
+      </DarkModeButton>
     </div>
   );
 };
