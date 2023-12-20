@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 
 const StarRating = ({ rating, setRating }) => {
-  
   const starStyle = (isRated) => ({
-    cursor: 'pointer',
-    color: isRated ? 'gold' : 'gray',
+    cursor: "pointer",
+    color: isRated ? "gold" : "gray",
   });
 
   return (

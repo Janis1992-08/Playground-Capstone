@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import StarRating from "../StarRating"; 
+import StarRating from "../StarRating";
+
 export default function ServiceProvider({
   firstName,
   lastName,
@@ -9,13 +10,12 @@ export default function ServiceProvider({
   phone,
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [rating, setRating] = useState(0); 
+  const [rating, setRating] = useState(0);
   const [isRated, setIsRated] = useState(false);
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
   };
 
-  
   const handleRating = () => {
     if (!isRated) {
       setIsRated(true);

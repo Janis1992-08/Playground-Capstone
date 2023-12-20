@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
 import { categories } from "@/lib/data";
-import styled from 'styled-components';
+import styled from "styled-components";
 
-// تعريف الأنماط المحلية
 const buttonStyle = {
   backgroundColor: "#3498db",
   color: "white",
@@ -48,8 +47,7 @@ const CenteredButton = styled.button`
   }
 `;
 
-// المكون الرئيسي للصفحة
-const App = ({ toggleTheme }) => {
+const App = ({}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (categoryId) => {
@@ -104,9 +102,6 @@ const App = ({ toggleTheme }) => {
           <span>Make a Service Offer</span>
         </CenteredButton>
       </Link>
-      <button onClick={toggleTheme} style={{ marginTop: '20px', padding: '10px', fontSize: '16px' }}>
-        Toggle Dark Mode
-      </button>
     </div>
   );
 };
