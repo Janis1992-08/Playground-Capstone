@@ -101,7 +101,7 @@ const SubcategoryPage = () => {
         </HeaderWrapper>
         <FilterControls>
           <FilterLabel>
-            Filter by:
+          <span style={{ color: '#000' }}>Filter by:</span>
             <select
               value={filterType}
               onChange={(e) => handleFilterTypeChange(e.target.value)}

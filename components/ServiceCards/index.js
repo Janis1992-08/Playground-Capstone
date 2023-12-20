@@ -28,12 +28,12 @@ export default function ServiceProvider({
 
       {showContactInfo ? (
         <div>
-          <h5>
+          <h4>
             <strong>Email:</strong> {email}
-          </h5>
-          <h6>
+          </h4>
+          <h4>
             <strong>Phone:</strong> {phone}
-          </h6>
+          </h4>
         </div>
       ) : null}
 

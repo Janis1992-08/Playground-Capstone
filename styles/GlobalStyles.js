@@ -18,7 +18,7 @@ export const GlobalStyles = createGlobalStyle`
     color: ${(props) => props.theme.text};
   }
 
-   h2, h4, h5, h6 {
+   h2, h4 {
     color: ${(props) => props.theme.headerColor};
   }
 `;
