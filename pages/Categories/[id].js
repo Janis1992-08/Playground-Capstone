@@ -111,7 +111,7 @@ const SubcategoryPage = ({ favorites, serviceCards, onToggleFavorite }) => {
             Filter by:
             <select
               value={filterType}
-              onChange={(e) => handleFilterTypeChange(e.target.value)}
+              onChange={(event) => handleFilterTypeChange(event.target.value)}
             >
               <option value="all"> All</option>
               <option value="skills"> Skills</option>
@@ -126,7 +126,7 @@ const SubcategoryPage = ({ favorites, serviceCards, onToggleFavorite }) => {
                 : filterType.toLowerCase()
             }...`}
             value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
+            onChange={(event) => setFilterValue(event.target.value)}
           />
         </FilterControls>
       </Header>
