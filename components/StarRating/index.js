@@ -8,19 +8,25 @@ const StarWrapper = styled.div`
 `;
 
 // Genauer Analysieren
-const StarRating = ({ rating, setRating }) => {
+const StarRating = ({ rating, setRating, isRated }) => {
   const [hoverRating, setHoverRating] = useState(0);
 
   const handleStarClick = (selectedRating) => {
-    setRating(selectedRating);
+    if (!isRated) {
+      setRating(selectedRating);
+    }
   };
 
   const handleStarHover = (selectedRating) => {
-    setHoverRating(selectedRating);
+    if (!isRated) {
+      setHoverRating(selectedRating);
+    }
   };
 
   const handleMouseLeave = () => {
-    setHoverRating(0);
+    if (!isRated) {
+      setHoverRating(0);
+    }
   };
 
   const stars = Array.from({ length: 5 }, (_, index) => index + 1);

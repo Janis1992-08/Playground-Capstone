@@ -64,7 +64,7 @@ export default function ServiceProvider({
         <strong>Needs:</strong> {needs}
       </p>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <StarRating rating={rating} setRating={setRating} />
+        <StarRating rating={rating} setRating={setRating} isRated={isRated} />
         <button onClick={handleRating}>Rate Me</button>
       </div>
 
