@@ -13,7 +13,7 @@ const Header = styled.header`
   border-bottom: 1px solid #ccc;
 `;
 
-const BackLink = styled.h1`
+const Headline = styled.h1`
   color: #333;
   text-decoration: none;
   font-weight: bold;
@@ -103,7 +103,7 @@ const SubcategoryPage = ({ favorites, serviceCards, onToggleFavorite }) => {
       <Header>
         <HeaderWrapper>
           <Link href="/">
-            <BackLink> &larr; {foundSubcategory.name}</BackLink>
+            <Headline> &larr; {foundSubcategory.name}</Headline>
           </Link>
         </HeaderWrapper>
         <FilterControls>
