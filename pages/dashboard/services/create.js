@@ -33,12 +33,13 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const Headline = styled.a`
+const Headline = styled.h1`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
   background-color: #007bff;
   color: #fff;
+  font-size: 20px;
   text-decoration: none;
   margin-bottom: 20px;
   transition: background-color 0.3s ease;
