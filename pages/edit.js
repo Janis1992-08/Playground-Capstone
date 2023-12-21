@@ -2,11 +2,12 @@ import React from "react";
 import ServiceButton from "@/components/ServiceButton";
 
 function EditForm({ editedCard, setEditedCard, handleSave }) {
+  if (!editedCard) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
-      <h2>
-        {editedCard.firstName} {editedCard.lastName}
-      </h2>
       <input
         type="text"
         required
