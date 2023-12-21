@@ -1,9 +1,18 @@
-// ServiceProvider.js
 import React, { useState } from "react";
 import styled from "styled-components";
 import useLocalStorageState from "use-local-storage-state";
 import ServiceButton from "@/components/ServiceButton";
 import ServiceProviderEdit from "../../pages/edit";
+
+const DeleteButton = styled.button`
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+`;
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -46,6 +55,11 @@ export default function ServiceProvider({
     setEditedCard(null);
   };
 
+  const handleDelete = (id) => {
+    const updatedCards = serviceCards.filter((cards) => cards.id !== card.id);
+    setServiceCards(updatedCards);
+  };
+
   return (
     <ServiceProviderWrapper key={card.id}>
       {editedCard && editedCard.id === card.id ? (
@@ -81,10 +95,16 @@ export default function ServiceProvider({
             {showContactInfo ? "Hide Contact" : "Show Contact"}
           </ServiceButton>
           <br></br>
+
           {!isOnFavoritesPage && (
-            <ServiceButton type="submit" onClick={() => handleEdit(card)}>
-              Edit
-            </ServiceButton>
+            <>
+              <ServiceButton type="submit" onClick={() => handleEdit(card)}>
+                Edit
+              </ServiceButton>
+              <DeleteButton type="button" onClick={() => handleDelete(card.id)}>
+                Delete
+              </DeleteButton>
+            </>
           )}
         </div>
       )}

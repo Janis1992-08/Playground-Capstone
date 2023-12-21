@@ -59,9 +59,6 @@ const FilterLabel = styled.label`
   margin-right: 10px;
 `;
 
-const FilterInput = styled.input`
-  margin-right: 10px;
-`;
 const SubcategoryPage = ({
   serviceCards,
   setServiceCards,
@@ -116,14 +113,14 @@ const SubcategoryPage = ({
             Filter by:
             <select
               value={filterType}
-              onChange={(e) => handleFilterTypeChange(e.target.value)}
+              onChange={(event) => handleFilterTypeChange(event.target.value)}
             >
               <option value="all"> All</option>
               <option value="skills"> Skills</option>
               <option value="needs"> Needs</option>
             </select>
           </FilterLabel>
-          <FilterInput
+          <input
             type="text"
             placeholder={`Enter ${
               filterType === "all"
@@ -131,7 +128,7 @@ const SubcategoryPage = ({
                 : filterType.toLowerCase()
             }...`}
             value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
+            onChange={(event) => setFilterValue(event.target.value)}
           />
         </FilterControls>
       </Header>
