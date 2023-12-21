@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/GlobalStyles";
 import styled from "styled-components";
-import { FiSun, FiMoon } from "react-icons/fi"; // استيراد أيقونات الشمس والقمر
+import { FiSun, FiMoon } from "react-icons/fi"; 
 
-// Styled component for the dark mode switch
 const SwitchButton = styled.label`
   position: fixed;
   top: 10px;
