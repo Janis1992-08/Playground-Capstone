@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ServiceProvider from "../../components/ServiceCards";
+import ServiceProvider from "../../components/ServiceProvider";
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -59,10 +59,12 @@ const FilterLabel = styled.label`
   margin-right: 10px;
 `;
 
-const FilterInput = styled.input`
-  margin-right: 10px;
-`;
-const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
+const SubcategoryPage = ({
+  serviceCards,
+  setServiceCards,
+  favorites,
+  onToggleFavorite,
+}) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
@@ -111,14 +113,14 @@ const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
             Filter by:
             <select
               value={filterType}
-              onChange={(e) => handleFilterTypeChange(e.target.value)}
+              onChange={(event) => handleFilterTypeChange(event.target.value)}
             >
               <option value="all"> All</option>
               <option value="skills"> Skills</option>
               <option value="needs"> Needs</option>
             </select>
           </FilterLabel>
-          <FilterInput
+          <input
             type="text"
             placeholder={`Enter ${
               filterType === "all"
@@ -126,7 +128,7 @@ const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
                 : filterType.toLowerCase()
             }...`}
             value={filterValue}
-            onChange={(e) => setFilterValue(e.target.value)}
+            onChange={(event) => setFilterValue(event.target.value)}
           />
         </FilterControls>
       </Header>
@@ -140,12 +142,10 @@ const SubcategoryPage = ({ serviceCards, favorites, onToggleFavorite }) => {
                 isFavorite={favorites.includes(card.id)}
               />
               <ServiceProvider
-                firstName={card.firstName}
-                lastName={card.lastName}
-                skills={card.skills}
-                needs={card.needs}
-                email={card.email}
-                phone={card.phone}
+                key={card.id}
+                card={card}
+                serviceCards={serviceCards}
+                setServiceCards={setServiceCards}
               />
             </Card>
           ))}
