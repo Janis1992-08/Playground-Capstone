@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, GlobalStyles } from "../styles/GlobalStyles";
 import styled from "styled-components";
+import { FiSun, FiMoon } from "react-icons/fi"; // استيراد أيقونات الشمس والقمر
 
 // Styled component for the dark mode switch
 const SwitchButton = styled.label`
@@ -54,8 +55,8 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
       <Component {...pageProps} toggleTheme={toggleTheme} theme={theme} />
-      <SwitchButton>
-        Dark Mode
+      <SwitchButton onClick={toggleTheme}>
+        {theme === "light" ? <FiSun /> : <FiMoon />}
         <SwitchInput
           type="checkbox"
           checked={theme === "dark"}
