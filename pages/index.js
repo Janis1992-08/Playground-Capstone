@@ -47,52 +47,7 @@ const CenteredButton = styled.button`
   }
 `;
 
-/* const DarkModeButton = styled.button`
-  position: absolute; 
-  top: 10px; 
-  right: 10px; 
-  padding: 10px;
-  fontSize: '16px';
-  backgroundColor: "#3498db";
-  color: "white";
-  border: "none";
-  borderRadius: "5px";
-  cursor: "pointer";
-`; */
-
-const SwitchButton = styled.label`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  align-items: center;
-`;
-
-const SwitchInput = styled.input`
-  margin-left: 10px;
-  appearance: none;
-  width: 40px;
-  height: 20px;
-  background-color: #3498db;
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-
-  &:before {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: white;
-    transition: transform 0.3s ease;
-    transform: ${({ checked }) =>
-      checked ? "translateX(20px)" : "translateX(0)"};
-  }
-`;
-
-const App = ({ toggleTheme, theme }) => {
+const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (categoryId) => {
@@ -153,14 +108,6 @@ const App = ({ toggleTheme, theme }) => {
           <span>Make a Service Offer</span>
         </CenteredButton>
       </Link>
-      <SwitchButton>
-        Dark Mode
-        <SwitchInput
-          type="checkbox"
-          checked={theme === "dark"}
-          onChange={toggleTheme}
-        />
-      </SwitchButton>
     </div>
   );
 };
