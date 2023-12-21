@@ -4,6 +4,7 @@ import Link from "next/link";
 import ServiceProvider from "../../components/ServiceCards";
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
+import FavoriteButton from "@/components/FavoriteButton";
 
 const Header = styled.header`
   background-color: #f0f0f0;
@@ -61,7 +62,7 @@ const FilterLabel = styled.label`
 const FilterInput = styled.input`
   margin-right: 10px;
 `;
-const SubcategoryPage = ({ serviceCards }) => {
+const SubcategoryPage = ({ favorites, serviceCards, onToggleFavorite }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
@@ -134,7 +135,12 @@ const SubcategoryPage = ({ serviceCards }) => {
         <CardWrapper>
           {filteredProviders.map((card) => (
             <Card key={card.id}>
+              <FavoriteButton
+                onClick={() => onToggleFavorite(card.id)}
+                isFavorite={favorites.includes(card.id)}
+              />
               <ServiceProvider
+                id={card.id}
                 firstName={card.firstName}
                 lastName={card.lastName}
                 skills={card.skills}

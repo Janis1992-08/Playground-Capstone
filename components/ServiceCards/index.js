@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import StarRating from "../StarRating";
+import useLocalStorageState from "use-local-storage-state";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -24,6 +25,7 @@ const ServiceDetails = styled.div`
 `;
 
 export default function ServiceProvider({
+  id,
   firstName,
   lastName,
   skills,
@@ -32,8 +34,10 @@ export default function ServiceProvider({
   phone,
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [rating, setRating] = useState(0);
   const [isRated, setIsRated] = useState(false);
+  const [rating, setRating] = useLocalStorageState(`rating-${id}`, {
+    defaultValue: 0,
+  });
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
@@ -42,6 +46,7 @@ export default function ServiceProvider({
   const handleRating = () => {
     if (!isRated) {
       setIsRated(true);
+      setRating(rating + 1);
     } else {
       alert("You have already rated.");
     }

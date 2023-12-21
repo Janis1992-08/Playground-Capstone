@@ -54,6 +54,7 @@ const FavoritesPage = ({ favorites, serviceCards, onToggleFavorite }) => {
                 isFavorite={favorites.includes(card.id)}
               />
               <ServiceProvider
+                id={card.id}
                 firstName={card.firstName}
                 lastName={card.lastName}
                 skills={card.skills}

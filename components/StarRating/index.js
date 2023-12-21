@@ -1,26 +1,42 @@
-import React from "react";
-//import { FaStar } from "react-icons/fa";
+import React, { useState } from "react";
+import styled from "styled-components";
 
+const StarWrapper = styled.div`
+  display: inline-block;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+// Genauer Analysieren
 const StarRating = ({ rating, setRating }) => {
-  const starStyle = (isRated) => ({
-    cursor: "pointer",
-    color: isRated ? "gold" : "gray",
-  });
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
+  const handleStarHover = (selectedRating) => {
+    setHoverRating(selectedRating);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverRating(0);
+  };
+
+  const stars = Array.from({ length: 5 }, (_, index) => index + 1);
 
   return (
     <div>
-      {[...Array(5)].map((_, index) => {
-        const ratingValue = index + 1;
-        return (
-          <span
-            key={ratingValue}
-            style={starStyle(ratingValue <= rating)}
-            onClick={() => setRating(ratingValue)}
-          >
-            &#9733;
-          </span>
-        );
-      })}
+      {stars.map((star) => (
+        <StarWrapper
+          key={star}
+          onClick={() => handleStarClick(star)}
+          onMouseEnter={() => handleStarHover(star)}
+          onMouseLeave={handleMouseLeave}
+        >
+          {star <= (hoverRating || rating) ? "⭐️" : "☆"}
+        </StarWrapper>
+      ))}
     </div>
   );
 };
