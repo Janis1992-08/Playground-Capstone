@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ServiceProvider from "../../components/ServiceCards"; // تأكد من صحة المسار
+import ServiceProvider from "@/components/ServiceCards"; // تأكد من صحة المسار
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
 
@@ -41,31 +41,10 @@ const Card = styled.div`
   }
 `;
 
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const FilterControls = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const FilterLabel = styled.label`
-  margin-right: 10px;
-`;
-
-const FilterInput = styled.input`
-  margin-right: 10px;
-`;
-
 const SubcategoryPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [providers, setProviders] = useState([]);
-  const [filterType, setFilterType] = useState("all");
-  const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
     const foundSubcategory = categories
@@ -81,54 +60,17 @@ const SubcategoryPage = () => {
     setProviders((prevProviders) => prevProviders.filter(provider => provider.id !== providerId));
   };
 
-  const filteredProviders = providers.filter((provider) => {
-    if (filterType === "all") {
-      return (
-        provider.skills.toLowerCase().includes(filterValue.toLowerCase()) ||
-        provider.needs.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-    return provider[filterType]
-      .toLowerCase()
-      .includes(filterValue.toLowerCase());
-  });
-
   return (
     <>
       <Header>
-        <HeaderWrapper>
-          <Link href="/">
-            <BackLink> &larr; Back to Categories</BackLink>
-          </Link>
-          <FilterControls>
-            <FilterLabel>
-              Filter by:
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <option value="all">All</option>
-                <option value="skills">Skills</option>
-                <option value="needs">Needs</option>
-              </select>
-            </FilterLabel>
-            <FilterInput
-              type="text"
-              placeholder={`Enter ${
-                filterType === "all"
-                  ? "skills or needs"
-                  : filterType.toLowerCase()
-              }...`}
-              value={filterValue}
-              onChange={(e) => setFilterValue(e.target.value)}
-            />
-          </FilterControls>
-        </HeaderWrapper>
+        <Link href="/">
+          <BackLink> &larr; Back to Categories</BackLink>
+        </Link>
       </Header>
 
       <main>
         <CardWrapper>
-          {filteredProviders.map((provider) => (
+          {providers.map((provider) => (
             <Card key={provider.id}>
               <ServiceProvider
                 id={provider.id}

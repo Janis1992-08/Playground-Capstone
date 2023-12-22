@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { categories } from "@/lib/data";
 import styled from "styled-components";
+import ServiceProvider from "@/components/ServiceCards";
 
 const buttonStyle = {
   backgroundColor: "#3498db",
