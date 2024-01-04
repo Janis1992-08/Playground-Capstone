@@ -34,7 +34,9 @@ export default function ServiceProvider({
   phone,
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [isRated, setIsRated] = useState(false);
+  const [isRated, setIsRated] = useLocalStorageState(`isRated-${id}`, {
+    defaultValue: false,
+  });
   const [rating, setRating] = useLocalStorageState(`rating-${id}`, {
     defaultValue: 0,
   });
@@ -46,7 +48,8 @@ export default function ServiceProvider({
   const handleRating = () => {
     if (!isRated) {
       setIsRated(true);
-      setRating(rating + 1);
+      setRating(rating);
+      alert("You have successfully rated!");
     } else {
       alert("You have already rated.");
     }
@@ -65,7 +68,7 @@ export default function ServiceProvider({
       </p>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <StarRating rating={rating} setRating={setRating} isRated={isRated} />
-        <button onClick={handleRating}>Rate Me</button>
+        {!isRated && <button onClick={handleRating}>Rate Me</button>}
       </div>
 
       {showContactInfo && (
