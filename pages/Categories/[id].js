@@ -64,6 +64,7 @@ const SubcategoryPage = ({
   setServiceCards,
   favorites,
   onToggleFavorite,
+  handleEditServiceCard,
 }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
@@ -146,6 +147,7 @@ const SubcategoryPage = ({
                 card={card}
                 serviceCards={serviceCards}
                 setServiceCards={setServiceCards}
+                handleEditServiceCard={handleEditServiceCard}
               />
             </Card>
           ))}

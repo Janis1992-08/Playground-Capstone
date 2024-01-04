@@ -1,31 +1,50 @@
 import React from "react";
 import ServiceButton from "@/components/ServiceButton";
 
-function EditForm({ editedCard, setEditedCard, handleSave }) {
+export default function EditForm({
+  editedCard,
+  setEditedCard,
+  handleEditServiceCard,
+}) {
+  const handleSave = (event) => {
+    event.preventDefault();
+
+    handleEditServiceCard(editedCard);
+    setEditedCard(null);
+  };
+
   if (!editedCard) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
+    <form onSubmit={handleSave}>
+      <label htmlFor="firstName">First Name:</label>
       <input
         type="text"
+        id="firstName"
         required
         value={editedCard.firstName}
         onChange={(event) =>
           setEditedCard({ ...editedCard, firstName: event.target.value })
         }
       />
+
+      <label htmlFor="lastName">Last Name:</label>
       <input
         type="text"
+        id="lastName"
         required
         value={editedCard.lastName}
         onChange={(event) =>
           setEditedCard({ ...editedCard, lastName: event.target.value })
         }
       />
+
+      <label htmlFor="skills">Skills:</label>
       <input
         type="text"
+        id="skills"
         required
         value={editedCard.skills}
         onChange={(event) =>
@@ -33,8 +52,10 @@ function EditForm({ editedCard, setEditedCard, handleSave }) {
         }
       />
 
+      <label htmlFor="needs">Needs:</label>
       <input
         type="text"
+        id="needs"
         required
         value={editedCard.needs}
         onChange={(event) =>
@@ -42,8 +63,10 @@ function EditForm({ editedCard, setEditedCard, handleSave }) {
         }
       />
 
+      <label htmlFor="email">Email:</label>
       <input
         type="email"
+        id="email"
         required
         value={editedCard.email}
         onChange={(event) =>
@@ -51,8 +74,10 @@ function EditForm({ editedCard, setEditedCard, handleSave }) {
         }
       />
 
+      <label htmlFor="phone">Phone:</label>
       <input
         type="tel"
+        id="phone"
         required
         value={editedCard.phone}
         onChange={(event) =>
@@ -60,21 +85,7 @@ function EditForm({ editedCard, setEditedCard, handleSave }) {
         }
       />
 
-      <ServiceButton type="button" onClick={handleSave}>
-        Save
-      </ServiceButton>
-    </div>
+      <ServiceButton type="submit">Save</ServiceButton>
+    </form>
   );
 }
-
-function ServiceProviderEdit({ editedCard, setEditedCard, handleSave }) {
-  return (
-    <EditForm
-      editedCard={editedCard}
-      setEditedCard={setEditedCard}
-      handleSave={handleSave}
-    />
-  );
-}
-
-export default ServiceProviderEdit;

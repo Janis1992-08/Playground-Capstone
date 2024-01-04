@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import useLocalStorageState from "use-local-storage-state";
 import ServiceButton from "@/components/ServiceButton";
-import ServiceProviderEdit from "../../pages/edit";
+import EditForm from "@/pages/edit";
 
 const DeleteButton = styled.button`
   background-color: #e74c3c;
@@ -26,11 +25,11 @@ const ServiceDetails = styled.div`
 `;
 
 export default function ServiceProvider({
-  id,
   card,
   serviceCards,
   setServiceCards,
   isOnFavoritesPage,
+  handleEditServiceCard,
 }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [editedCard, setEditedCard] = useState(null);
@@ -39,23 +38,11 @@ export default function ServiceProvider({
     setShowContactInfo(!showContactInfo);
   };
 
-  function handleEditServiceCard(updatedServiceCard) {
-    const updatedCards = serviceCards.map((card) =>
-      card.id === updatedServiceCard.id ? updatedServiceCard : card
-    );
-    setServiceCards(updatedCards);
-  }
-
   const handleEdit = (updatedServiceCard) => {
     setEditedCard(updatedServiceCard);
   };
 
-  const handleSave = () => {
-    handleEditServiceCard(editedCard);
-    setEditedCard(null);
-  };
-
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     const updatedCards = serviceCards.filter((cards) => cards.id !== card.id);
     setServiceCards(updatedCards);
   };
@@ -63,10 +50,10 @@ export default function ServiceProvider({
   return (
     <ServiceProviderWrapper key={card.id}>
       {editedCard && editedCard.id === card.id ? (
-        <ServiceProviderEdit
+        <EditForm
           editedCard={editedCard}
           setEditedCard={setEditedCard}
-          handleSave={handleSave}
+          handleEditServiceCard={handleEditServiceCard}
         />
       ) : (
         <div>
@@ -98,7 +85,7 @@ export default function ServiceProvider({
 
           {!isOnFavoritesPage && (
             <>
-              <ServiceButton type="submit" onClick={() => handleEdit(card)}>
+              <ServiceButton onClick={() => handleEdit(card)}>
                 Edit
               </ServiceButton>
               <DeleteButton type="button" onClick={() => handleDelete(card.id)}>
