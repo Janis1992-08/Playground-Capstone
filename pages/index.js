@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { categories } from "@/lib/data";
+//import { categories } from "@/lib/data";
+import Category from "@/db/models/Category";
 import styled from "styled-components";
 
 const buttonStyle = {
@@ -70,7 +71,21 @@ const ShowFavorites = styled.div`
 `;
 
 const Homepage = () => {
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesFromDB = await Category.find();
+        setCategories(categoriesFromDB);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory((prevSelectedCategory) =>
@@ -88,18 +103,18 @@ const Homepage = () => {
       </h2>
       <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
         {categories.map((category) => (
-          <li key={category.id} style={{ marginBottom: "10px" }}>
+          <li key={category._id} style={{ marginBottom: "10px" }}>
             <button
-              onClick={() => handleCategoryClick(category.id)}
+              onClick={() => handleCategoryClick(category._id)}
               style={
-                selectedCategory === category.id
+                selectedCategory === category._id
                   ? selectedButtonStyle
                   : buttonStyle
               }
             >
               {category.name}
             </button>
-            {selectedCategory === category.id && (
+            {selectedCategory === category._id && (
               <ul
                 style={{
                   listStyleType: "none",
@@ -108,8 +123,8 @@ const Homepage = () => {
                 }}
               >
                 {category.subcategories.map((subcategory) => (
-                  <li key={subcategory.id} style={subcategoryStyle}>
-                    <Link href={`/Categories/${subcategory.id}`}>
+                  <li key={subcategory._id} style={subcategoryStyle}>
+                    <Link href={`/Categories/${subcategory._id}`}>
                       {subcategory.name}
                     </Link>{" "}
                   </li>

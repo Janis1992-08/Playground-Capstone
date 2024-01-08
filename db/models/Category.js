@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
+//const { Schema } = mongoose;
+
+const { Schema, model, models } = mongoose;
 
 const providerSchema = new Schema({
   firstName: { type: String, required: true },
@@ -21,6 +23,6 @@ const categorySchema = new Schema({
 });
 
 const Category =
-  mongoose.models.Categoty || mongoose.model("Category", categorySchema);
+  mongoose.models.Category || mongoose.model("Category", categorySchema);
 
 export default Category;
