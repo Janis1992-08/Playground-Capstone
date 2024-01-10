@@ -63,7 +63,7 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
   };
   const { mutate } = useSWR("/api/providers/");
 
-  async function handleAppProduct(event) {
+  async function handleAddProvider(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
