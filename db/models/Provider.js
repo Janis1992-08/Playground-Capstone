@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-//const { Schema } = mongoose;
 
 const { Schema, model, models } = mongoose;
 
@@ -12,17 +11,7 @@ const providerSchema = new Schema({
   phone: { type: String, required: true },
 });
 
-const subcategorySchema = new Schema({
-  name: { type: String, required: true },
-  providers: [providerSchema],
-});
+const Provider =
+  mongoose.models.Provider || mongoose.model("Provider", providerSchema);
 
-const categorySchema = new Schema({
-  name: { type: String, required: true },
-  subcategories: [subcategorySchema],
-});
-
-const Category =
-  mongoose.models.Category || mongoose.model("Category", categorySchema);
-
-export default Category;
+export default Provider;

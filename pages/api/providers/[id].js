@@ -1,17 +1,17 @@
 import dbConnect from "@/db/connect.js";
-import Category from "@/db/models/Category.js";
+import Provider from "@/db/models/Provider.js";
 
 export default async function handler(request, response) {
   await dbConnect();
   const { id } = request.query;
 
   if (request.method === "GET") {
-    const category = await Category.findById(id);
+    const provider = await Provider.findById(request.query.id);
 
-    if (!category) {
+    if (!provider) {
       return response.status(404).json({ status: "Not Found" });
     }
 
-    response.status(200).json(category);
+    response.status(200).json(provider);
   }
 }

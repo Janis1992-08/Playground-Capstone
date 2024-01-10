@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 //import { categories } from "@/lib/data";
-import Category from "@/db/models/Category";
+import Category from "@/db/models/Provider";
 import styled from "styled-components";
 
 const buttonStyle = {

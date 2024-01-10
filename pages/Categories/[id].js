@@ -70,6 +70,7 @@ const SubcategoryPage = ({
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
   const { id } = router.query;
+  const { data: recipe, mutate } = useSWR(`/api/providers/${id}`, fetcher);
 
   // Find the subcategory based on the ID in the categories
   const foundSubcategory = categories
