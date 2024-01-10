@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import useSWR from "swr";
 import Link from "next/link";
-import ServiceProvider from "../../components/ServiceProvider";
 import styled from "styled-components";
-import { categories } from "@/lib/data.js";
-//import fetcher from "@/lib/fetcher.js";
+import { categories } from "../../lib/data.js";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import ServiceProvider from "@/components/ServiceProvider/index.js";
+import FavoriteButton from "@/components/FavoriteButton/index.js";
+import useSWR from "swr";
 
 const Header = styled.header`
   background-color: #f0f0f0;
@@ -14,7 +14,7 @@ const Header = styled.header`
   border-bottom: 1px solid #ccc;
 `;
 
-const BackLink = styled.h1`
+const Headline = styled.h1`
   color: #333;
   text-decoration: none;
   font-weight: bold;
@@ -23,7 +23,7 @@ const BackLink = styled.h1`
   }
 `;
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -31,13 +31,13 @@ const CardWrapper = styled.div`
   padding: 20px;
 `;
 
-const Card = styled.div`
+const Card = styled.li`
   background-color: #fff;
   border: 1px solid #ccc;
+  list-style: none;
   border-radius: 5px;
   padding: 10px;
   width: 300px;
-  position: relative;
   text-align: center;
   transition: box-shadow 0.3s ease;
 
@@ -48,7 +48,6 @@ const Card = styled.div`
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
 `;
 
 const FilterControls = styled.div`
@@ -60,17 +59,23 @@ const FilterLabel = styled.label`
   margin-right: 10px;
 `;
 
-const SubcategoryPage = ({ fetcher }) => {
+const SubcategoryPage = ({
+  fetcher,
+  serviceCards,
+  setServiceCards,
+  favorites,
+  onToggleFavorite,
+  handleEditServiceCard,
+}) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
-  const { isReady } = router;
   const { id } = router.query;
+  const { isReady } = router;
   const { data, mutate } = useSWR("/api/providers", fetcher);
 
   if (!data || !isReady) return <div>Loading...</div>;
 
-  // Find the subcategory based on the ID in the categories
   const foundSubcategory = categories
     .flatMap((category) => category.subcategories)
     .find((sub) => sub.id === id);
@@ -105,7 +110,7 @@ const SubcategoryPage = ({ fetcher }) => {
       <Header>
         <HeaderWrapper>
           <Link href="/">
-            <BackLink> &larr; {foundSubcategory.name}</BackLink>
+            <Headline> &larr; {foundSubcategory.name}</Headline>
           </Link>
         </HeaderWrapper>
         <FilterControls>
@@ -137,7 +142,17 @@ const SubcategoryPage = ({ fetcher }) => {
         <CardWrapper>
           {filteredProviders.map((provider) => (
             <Card key={provider._id}>
-              <ServiceProvider key={provider._id} card={provider} />
+              <FavoriteButton
+                onClick={() => onToggleFavorite(provider._id)}
+                isFavorite={favorites.includes(provider._id)}
+              />
+              <ServiceProvider
+                key={provider._id}
+                card={provider}
+                serviceCards={serviceCards}
+                setServiceCards={setServiceCards}
+                handleEditServiceCard={handleEditServiceCard}
+              />
             </Card>
           ))}
         </CardWrapper>
