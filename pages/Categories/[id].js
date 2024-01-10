@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 import Link from "next/link";
 import ServiceProvider from "../../components/ServiceProvider";
 import styled from "styled-components";
 import { categories } from "@/lib/data.js";
-import FavoriteButton from "@/components/FavoriteButton";
+//import fetcher from "@/lib/fetcher.js";
 
 const Header = styled.header`
   background-color: #f0f0f0;
@@ -59,18 +60,15 @@ const FilterLabel = styled.label`
   margin-right: 10px;
 `;
 
-const SubcategoryPage = ({
-  serviceCards,
-  setServiceCards,
-  favorites,
-  onToggleFavorite,
-  handleEditServiceCard,
-}) => {
+const SubcategoryPage = ({ fetcher }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
+  const { isReady } = router;
   const { id } = router.query;
-  const { data: recipe, mutate } = useSWR(`/api/providers/${id}`, fetcher);
+  const { data, mutate } = useSWR("/api/providers", fetcher);
+
+  if (!data || !isReady) return <div>Loading...</div>;
 
   // Find the subcategory based on the ID in the categories
   const foundSubcategory = categories
@@ -86,7 +84,7 @@ const SubcategoryPage = ({
     setFilterValue("");
   };
 
-  const filteredServiceCards = serviceCards.filter(
+  const filteredServiceCards = data.filter(
     (card) => card.subcategory === foundSubcategory.name
   );
 
@@ -137,19 +135,9 @@ const SubcategoryPage = ({
 
       <main>
         <CardWrapper>
-          {filteredProviders.map((card) => (
-            <Card key={card.id}>
-              <FavoriteButton
-                onClick={() => onToggleFavorite(card.id)}
-                isFavorite={favorites.includes(card.id)}
-              />
-              <ServiceProvider
-                key={card.id}
-                card={card}
-                serviceCards={serviceCards}
-                setServiceCards={setServiceCards}
-                handleEditServiceCard={handleEditServiceCard}
-              />
+          {filteredProviders.map((provider) => (
+            <Card key={provider._id}>
+              <ServiceProvider key={provider._id} card={provider} />
             </Card>
           ))}
         </CardWrapper>

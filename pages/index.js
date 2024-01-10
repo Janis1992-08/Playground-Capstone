@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-//import { categories } from "@/lib/data";
-import Category from "@/db/models/Provider";
+import { categories } from "@/lib/data";
 import styled from "styled-components";
 
 const buttonStyle = {
@@ -71,21 +70,7 @@ const ShowFavorites = styled.div`
 `;
 
 const Homepage = () => {
-  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesFromDB = await Category.find();
-        setCategories(categoriesFromDB);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory((prevSelectedCategory) =>
@@ -96,25 +81,25 @@ const Homepage = () => {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
       <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-        ServiceCircle
+        Service Circle
       </h1>
       <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
         Find your perfect Service-Match
       </h2>
       <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
         {categories.map((category) => (
-          <li key={category._id} style={{ marginBottom: "10px" }}>
+          <li key={category.id} style={{ marginBottom: "10px" }}>
             <button
-              onClick={() => handleCategoryClick(category._id)}
+              onClick={() => handleCategoryClick(category.id)}
               style={
-                selectedCategory === category._id
+                selectedCategory === category.id
                   ? selectedButtonStyle
                   : buttonStyle
               }
             >
               {category.name}
             </button>
-            {selectedCategory === category._id && (
+            {selectedCategory === category.id && (
               <ul
                 style={{
                   listStyleType: "none",
@@ -123,8 +108,8 @@ const Homepage = () => {
                 }}
               >
                 {category.subcategories.map((subcategory) => (
-                  <li key={subcategory._id} style={subcategoryStyle}>
-                    <Link href={`/Categories/${subcategory._id}`}>
+                  <li key={subcategory.id} style={subcategoryStyle}>
+                    <Link href={`/categories/${subcategory.id}`}>
                       {subcategory.name}
                     </Link>{" "}
                   </li>
@@ -135,10 +120,10 @@ const Homepage = () => {
         ))}
       </ul>
 
-      <Link href="/dashboard/services/create">
+      <Link href="/create-service-card-form">
         <ServiceOfferElement>Make a Service Offer</ServiceOfferElement>
       </Link>
-      <Link href="/favoritesPage">
+      <Link href="/favorites">
         <ShowFavorites>Show my Favorites</ShowFavorites>
       </Link>
     </div>
