@@ -3,6 +3,7 @@ import { categories } from "@/lib/data";
 import Link from "next/link";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import useSWR from "swr";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -60,6 +61,25 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
     category: "",
     subcategory: "",
   };
+  const { mutate } = useSWR("/api/providers/");
+
+  async function handleAppProduct(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const productData = Object.fromEntries(formData);
+    const response = await fetch("/api/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productData),
+    });
+
+    if (response.ok) {
+      mutate();
+    }
+  }
 
   const [formData, setFormData] = useState({ ...initialFormData });
 
