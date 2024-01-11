@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
+import { mutate } from "swr";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -32,47 +34,78 @@ const DeleteButton = styled.button`
   margin-top: 10px;
 `;
 
-export default function ServiceProvider({
-  card,
-  isOnFavoritesPage,
-  handleEditServiceCard,
-  serviceCards,
-  setServiceCards,
-}) {
+export default function ServiceProvider({ card, isOnFavoritesPage }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [editedCard, setEditedCard] = useState(null);
+  const [editedCard, setEditedCard] = useState({
+    firstName: "",
+    lastName: "",
+    skills: "",
+    needs: "",
+    email: "",
+    phone: "",
+  });
+  /*   const router = useRouter();
+
+  const { id } = router.query;
+  const { data, error } = useSWR(`/api/providers/${id}`);
+
+  if (error) return <div>Failed to load</div>;
+
+  if (!data) return <div>Loading...</div>; */
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
   };
 
+  async function handleEditServiceCard(editedCard) {
+    const url = `/api/providers/${editedCard._id}`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editedCard),
+    });
+
+    if (response.ok) {
+      const updatedData = await response.json();
+      mutate(url, updatedData);
+    }
+  }
+
   const handleEdit = (updatedServiceCard) => {
-    setEditedCard(updatedServiceCard);
+    setEditedCard({ ...updatedServiceCard, _id: card._id });
   };
 
-  const handleSave = (event) => {
+  const handleSave = async (event) => {
     event.preventDefault();
 
-    handleEditServiceCard(editedCard);
-    setEditedCard(null);
+    const updatedCard = await handleEditServiceCard(editedCard);
+    setEditedCard(updatedCard);
   };
 
-  const handleDelete = () => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this service provider?"
-    );
+  async function handleDelete(id) {
+    const url = `/api/providers/${id}`;
+    try {
+      const response = await fetch(url, {
+        method: "DELETE",
+      });
 
-    if (isConfirmed) {
-      const updatedCards = serviceCards.filter(
-        (cards) => cards.id !== card._id
-      );
-      setServiceCards(updatedCards);
+      if (response.ok) {
+        await response.json(); // Ensure the response is fully read
+
+        mutate(url);
+      } else {
+        console.error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("An error occurred during the delete request:", error);
     }
-  };
+  }
 
   return (
     <ServiceProviderWrapper key={card._id}>
-      {editedCard && editedCard.id === card._id ? (
+      {editedCard?._id === card._id ? (
         <form onSubmit={handleSave}>
           <label htmlFor="firstName"> First Name: </label>
           <input

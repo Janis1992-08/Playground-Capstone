@@ -65,14 +65,13 @@ const SubcategoryPage = ({
   setServiceCards,
   favorites,
   onToggleFavorite,
-  handleEditServiceCard,
 }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
   const { id } = router.query;
   const { isReady } = router;
-  const { data, mutate } = useSWR("/api/providers", fetcher);
+  const { data } = useSWR("/api/providers", fetcher);
 
   if (!data || !isReady) return <div>Loading...</div>;
 
@@ -151,7 +150,6 @@ const SubcategoryPage = ({
                 card={provider}
                 serviceCards={serviceCards}
                 setServiceCards={setServiceCards}
-                handleEditServiceCard={handleEditServiceCard}
               />
             </Card>
           ))}

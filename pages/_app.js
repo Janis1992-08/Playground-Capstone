@@ -12,12 +12,12 @@ export default function MyApp({ Component, pageProps }) {
     defaultValue: [],
   });
 
-  function handleEditServiceCard(updatedServiceCard) {
+  /* function handleEditServiceCard(updatedServiceCard) {
     const updatedCards = serviceCards.map((card) =>
       card.id === updatedServiceCard.id ? updatedServiceCard : card
     );
     setServiceCards(updatedCards);
-  }
+  } */
 
   function handleToggleFavorite(serviceCardId) {
     const isFavorite = favorites.includes(serviceCardId);
@@ -36,7 +36,6 @@ export default function MyApp({ Component, pageProps }) {
           {...pageProps}
           serviceCards={serviceCards}
           setServiceCards={setServiceCards}
-          handleEditServiceCard={handleEditServiceCard}
           favorites={favorites}
           onToggleFavorite={handleToggleFavorite}
         />
