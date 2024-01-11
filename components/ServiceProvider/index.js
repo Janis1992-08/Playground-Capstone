@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { mutate } from "swr";
+import router from "next/router";
 import EditForm from "@/pages/edit";
 
 const ServiceProviderWrapper = styled.div`
@@ -35,7 +35,7 @@ const DeleteButton = styled.button`
   margin-top: 10px;
 `;
 
-export default function ServiceProvider({ card, isOnFavoritesPage }) {
+export default function ServiceProvider({ card, isOnFavoritesPage, id }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [editedCard, setEditedCard] = useState({
     firstName: "",
@@ -45,7 +45,7 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
     email: "",
     phone: "",
   });
-  console.log(card);
+
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
   };
@@ -64,7 +64,7 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
       if (response.ok) {
         await response.json(); // Ensure the response is fully read
 
-        mutate(url);
+        router.reload(); // Reload the page
       } else {
         console.error(`Error: ${response.status}`);
       }
@@ -76,7 +76,11 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
   return (
     <ServiceProviderWrapper key={card._id}>
       {editedCard?._id === card._id ? (
-        <EditForm editedCard={editedCard} setEditedCard={setEditedCard} />
+        <EditForm
+          editedCard={editedCard}
+          setEditedCard={setEditedCard}
+          card={card}
+        />
       ) : (
         <div>
           <h2>

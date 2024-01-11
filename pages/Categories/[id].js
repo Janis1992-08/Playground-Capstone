@@ -60,7 +60,6 @@ const FilterLabel = styled.label`
 `;
 
 const SubcategoryPage = ({
-  fetcher,
   serviceCards,
   setServiceCards,
   favorites,
@@ -71,7 +70,7 @@ const SubcategoryPage = ({
   const router = useRouter();
   const { id } = router.query;
   const { isReady } = router;
-  const { data } = useSWR("/api/providers", fetcher);
+  const { data } = useSWR("/api/providers");
 
   if (!data || !isReady) return <div>Loading...</div>;
 
@@ -146,7 +145,7 @@ const SubcategoryPage = ({
                 isFavorite={favorites.includes(provider._id)}
               />
               <ServiceProvider
-                key={provider._id}
+                id={provider._id}
                 card={provider}
                 serviceCards={serviceCards}
                 setServiceCards={setServiceCards}
