@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { categories } from "@/lib/data";
 import Link from "next/link";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import useSWR from "swr";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -49,8 +49,8 @@ const Headline = styled.h1`
   }
 `;
 
-export default function CreateServiceCardForm({ handleAddServiceCards }) {
-  const initialFormData = {
+export default function CreateServiceCardForm({}) {
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     skills: "",
@@ -59,29 +59,51 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
     phone: "",
     category: "",
     subcategory: "",
-  };
+  });
 
-  const [formData, setFormData] = useState({ ...initialFormData });
+  const { mutate } = useSWR("/api/providers/");
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleSubmit = (event) => {
+  const handleAddServiceCards = async (formData) => {
+    const response = await fetch("/api/providers/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const newServiceCard = await response.json();
+      mutate("/api/providers/", (data) => [...data, newServiceCard], false);
+    } else {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const newServiceCard = { ...formData, id: uuidv4() };
-    handleAddServiceCards(newServiceCard);
-
-    const toastMessage = `The Service Card is created and you can find it in the assigned subcategory: ${formData.subcategory}`;
-    alert(toastMessage);
-
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({ ...initialFormData });
+    try {
+      await handleAddServiceCards(formData);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        skills: "",
+        needs: "",
+        email: "",
+        phone: "",
+        category: "",
+        subcategory: "",
+      }); // reset form data
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
   };
 
   return (

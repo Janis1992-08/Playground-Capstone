@@ -1,5 +1,8 @@
+import { SWRConfig } from "swr";
 import GlobalStyle from "../styles";
 import useLocalStorageState from "use-local-storage-state";
+
+const fetcher = (url) => fetch(url).then((response) => response.json());
 
 export default function MyApp({ Component, pageProps }) {
   const [serviceCards, setServiceCards] = useLocalStorageState("serviceCards", {
@@ -16,13 +19,6 @@ export default function MyApp({ Component, pageProps }) {
     setServiceCards(updatedCards);
   }
 
-  function handleAddServiceCards(newServiceCard) {
-    setServiceCards((prevServiceCards) => [
-      ...prevServiceCards,
-      newServiceCard,
-    ]);
-  }
-
   function handleToggleFavorite(serviceCardId) {
     const isFavorite = favorites.includes(serviceCardId);
     if (isFavorite) {
@@ -35,15 +31,16 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <GlobalStyle />
-      <Component
-        {...pageProps}
-        serviceCards={serviceCards}
-        setServiceCards={setServiceCards}
-        handleEditServiceCard={handleEditServiceCard}
-        handleAddServiceCards={handleAddServiceCards}
-        favorites={favorites}
-        onToggleFavorite={handleToggleFavorite}
-      />
+      <SWRConfig value={{ fetcher }}>
+        <Component
+          {...pageProps}
+          serviceCards={serviceCards}
+          setServiceCards={setServiceCards}
+          handleEditServiceCard={handleEditServiceCard}
+          favorites={favorites}
+          onToggleFavorite={handleToggleFavorite}
+        />
+      </SWRConfig>
     </>
   );
 }
