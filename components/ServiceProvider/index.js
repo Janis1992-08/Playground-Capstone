@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import router from "next/router";
 import EditForm from "@/pages/edit";
 
 const ServiceProviderWrapper = styled.div`
@@ -35,23 +34,21 @@ const DeleteButton = styled.button`
   margin-top: 10px;
 `;
 
-export default function ServiceProvider({ card, isOnFavoritesPage, id }) {
+export default function ServiceProvider({ card, isOnFavoritesPage }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [editedCard, setEditedCard] = useState({
-    firstName: "",
-    lastName: "",
-    skills: "",
-    needs: "",
-    email: "",
-    phone: "",
-  });
+  const [editedCard, setEditedCard] = useState(null);
+  const router = useRouter(); // Use useRouter to get the router object
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
   };
 
   const handleEdit = (updatedServiceCard) => {
-    setEditedCard({ ...updatedServiceCard, _id: card._id });
+    try {
+      setEditedCard({ ...updatedServiceCard, _id: card._id });
+    } catch (error) {
+      console.error("Error setting edited card:", error);
+    }
   };
 
   async function handleDelete(id) {

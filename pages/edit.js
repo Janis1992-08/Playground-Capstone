@@ -1,4 +1,3 @@
-//import React from "react";
 import ServiceButton from "@/components/ServiceButton";
 import useSWR from "swr";
 import { useState } from "react";
@@ -20,7 +19,8 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
 
       if (response.ok) {
         const updatedData = await response.json();
-        mutate(url, updatedData);
+        mutate(url, () => ({ ...updatedData }), false);
+        return updatedData; // Return the updated data
       } else {
         console.error("Error updating provider:", response.statusText);
         // Add UI feedback for the user
@@ -37,8 +37,8 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
     event.preventDefault();
 
     setIsSaving(true);
-    await handleEditServiceCard();
-    setEditedCard(null);
+    const updatedData = await handleEditServiceCard();
+    setEditedCard(updatedData); // Update the state with the updated data
   };
 
   if (!editedCard) {
