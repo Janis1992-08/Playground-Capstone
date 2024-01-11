@@ -120,7 +120,7 @@ const Homepage = () => {
         ))}
       </ul>
 
-      <Link href="/create-service-card-form">
+      <Link href="/dashboard/services/create">
         <ServiceOfferElement>Make a Service Offer</ServiceOfferElement>
       </Link>
       <Link href="/favorites">

@@ -3,7 +3,6 @@ import { categories } from "@/lib/data";
 import Link from "next/link";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import useSWR from "swr";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -61,47 +60,24 @@ export default function CreateServiceCardForm({ handleAddServiceCards }) {
     category: "",
     subcategory: "",
   };
-  const { mutate } = useSWR("/api/providers/");
-
-  async function handleAddProvider(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const productData = Object.fromEntries(formData);
-    const response = await fetch("/api/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productData),
-    });
-
-    if (response.ok) {
-      mutate();
-    }
-  }
 
   const [formData, setFormData] = useState({ ...initialFormData });
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const newServiceCard = { ...formData, id: uuidv4() };
-    handleAddServiceCards(newServiceCard);
-
-    const toastMessage = `The Service Card is created and you can find it in the assigned subcategory: ${formData.subcategory}`;
-    alert(toastMessage);
-
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFormData({ ...initialFormData });
+    try {
+      await handleAddServiceCards(formData);
+      setFormData({ ...initialFormData }); // reset form data
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
   };
 
   return (
