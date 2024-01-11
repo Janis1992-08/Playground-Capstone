@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
+import EditForm from "@/pages/edit";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -44,44 +45,13 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
     email: "",
     phone: "",
   });
-  /*   const router = useRouter();
-
-  const { id } = router.query;
-  const { data, error } = useSWR(`/api/providers/${id}`);
-
-  if (error) return <div>Failed to load</div>;
-
-  if (!data) return <div>Loading...</div>; */
-
+  console.log(card);
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
   };
 
-  async function handleEditServiceCard(editedCard) {
-    const url = `/api/providers/${editedCard._id}`;
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(editedCard),
-    });
-
-    if (response.ok) {
-      const updatedData = await response.json();
-      mutate(url, updatedData);
-    }
-  }
-
   const handleEdit = (updatedServiceCard) => {
     setEditedCard({ ...updatedServiceCard, _id: card._id });
-  };
-
-  const handleSave = async (event) => {
-    event.preventDefault();
-
-    const updatedCard = await handleEditServiceCard(editedCard);
-    setEditedCard(updatedCard);
   };
 
   async function handleDelete(id) {
@@ -106,76 +76,7 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
   return (
     <ServiceProviderWrapper key={card._id}>
       {editedCard?._id === card._id ? (
-        <form onSubmit={handleSave}>
-          <label htmlFor="firstName"> First Name: </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            required
-            value={editedCard.firstName}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, firstName: event.target.value })
-            }
-          />
-          <label htmlFor="lastName">Last Name: </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            required
-            value={editedCard.lastName}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, lastName: event.target.value })
-            }
-          />
-          <label htmlFor="skills">Skills: </label>
-          <input
-            type="text"
-            id="skills"
-            name="skills"
-            required
-            value={editedCard.skills}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, skills: event.target.value })
-            }
-          />
-          <label htmlFor="needs">Needs: </label>
-          <input
-            type="text"
-            id="needs"
-            name="needs"
-            required
-            value={editedCard.needs}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, needs: event.target.value })
-            }
-          />
-          <label htmlFor="email">email: </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={editedCard.email}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, email: event.target.value })
-            }
-          />
-          <label htmlFor="phone">phone: </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            required
-            value={editedCard.phone}
-            onChange={(event) =>
-              setEditedCard({ ...editedCard, phone: event.target.value })
-            }
-          />
-
-          <ServiceButton type="submit">Save</ServiceButton>
-        </form>
+        <EditForm editedCard={editedCard} setEditedCard={setEditedCard} />
       ) : (
         <div>
           <h2>

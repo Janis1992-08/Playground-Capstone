@@ -1,11 +1,37 @@
 import React from "react";
 import ServiceButton from "@/components/ServiceButton";
+import { useRouter } from "next/router";
+import useSWR, { mutate } from "swr";
 
-export default function EditForm({
-  editedCard,
-  setEditedCard,
-  handleEditServiceCard,
-}) {
+export default function EditForm({ editedCard, setEditedCard }) {
+  const router = useRouter();
+
+  const { id } = router.query;
+
+  console.log("id", id);
+  const { data, error } = useSWR(`/api/providers/${id}`);
+
+  console.log("data", data);
+  if (error) return <div>Failed to load</div>;
+
+  if (!data) return <div>Loading...</div>;
+
+  async function handleEditServiceCard() {
+    const url = `/api/providers/${id}`;
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(editedCard),
+    });
+
+    if (response.ok) {
+      const updatedData = await response.json();
+      mutate(url, updatedData);
+    }
+  }
+
   const handleSave = (event) => {
     event.preventDefault();
 
