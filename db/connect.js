@@ -27,6 +27,11 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      useNewUrlParser: true, // Use new URL string parser
+      useUnifiedTopology: true, // Use new Server Discover and Monitoring engine
+      writeConcern: {
+        w: "majority", // Write concern
+      },
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

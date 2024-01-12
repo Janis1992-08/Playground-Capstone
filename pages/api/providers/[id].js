@@ -23,6 +23,7 @@ export default async function handler(request, response) {
     try {
       const updatedProvider = request.body;
       await Provider.findByIdAndUpdate(id, updatedProvider);
+      console.log("updatedProvider", updatedProvider);
       response.status(200).json({ status: `Provider successfully updated.` });
     } catch (error) {
       console.error("Error updating provider:", error);
