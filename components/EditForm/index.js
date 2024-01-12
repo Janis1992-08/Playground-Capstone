@@ -17,6 +17,7 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
 
       if (response.ok) {
         const updatedData = await response.json();
+
         mutate();
         return updatedData; // Return the updated data
       } else {
@@ -33,10 +34,6 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
     const updatedData = await handleEditServiceCard();
     setEditedCard(updatedData); // Update the state with the updated data
   };
-
-  if (!editedCard) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <form onSubmit={handleSave}>

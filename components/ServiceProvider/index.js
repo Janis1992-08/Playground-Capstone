@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
-import EditForm from "@/pages/edit";
+import EditForm from "@/components/EditForm";
 import router from "next/router";
+import useSWR from "swr";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -42,14 +43,6 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
     setShowContactInfo(!showContactInfo);
   };
 
-  const handleEdit = (updatedServiceCard) => {
-    try {
-      setEditedCard({ ...updatedServiceCard, _id: card._id });
-    } catch (error) {
-      console.error("Error setting edited card:", error);
-    }
-  };
-
   async function handleDelete(id) {
     const url = `/api/providers/${id}`;
     try {
@@ -68,6 +61,10 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
       console.error("An error occurred during the delete request:", error);
     }
   }
+
+  const handleOpenEditForm = () => {
+    setEditedCard(card);
+  };
 
   return (
     <ServiceProviderWrapper key={card._id}>
@@ -106,9 +103,7 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
           <br></br>
           {!isOnFavoritesPage && (
             <>
-              <ServiceButton onClick={() => handleEdit(card)}>
-                Edit
-              </ServiceButton>
+              <ServiceButton onClick={handleOpenEditForm}>Edit</ServiceButton>
               <DeleteButton
                 type="button"
                 onClick={() => handleDelete(card._id)}
