@@ -1,7 +1,9 @@
 import ServiceButton from "@/components/ServiceButton";
-import { mutate } from "swr";
+import useSWR from "swr";
 
 export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
+  const { mutate } = useSWR(`/api/providers/${_id}`);
+
   async function handleEditServiceCard() {
     try {
       const url = `/api/providers/${_id}`;
@@ -15,15 +17,13 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
 
       if (response.ok) {
         const updatedData = await response.json();
-        mutate(url, () => ({ ...updatedData }), false);
+        mutate();
         return updatedData; // Return the updated data
       } else {
         console.error("Error updating provider:", response.statusText);
-        // Add UI feedback for the user
       }
     } catch (error) {
       console.error("Unexpected error:", error);
-      // Add UI feedback for the user
     }
   }
 

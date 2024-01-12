@@ -81,7 +81,7 @@ export default function CreateServiceCardForm({}) {
 
     if (response.ok) {
       const newServiceCard = await response.json();
-      mutate("/api/providers/", (data) => [...data, newServiceCard], false);
+      mutate();
     } else {
       throw new Error(`Error: ${response.statusText}`);
     }
