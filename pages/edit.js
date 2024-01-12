@@ -1,11 +1,7 @@
 import ServiceButton from "@/components/ServiceButton";
-import useSWR from "swr";
-import { useState } from "react";
+import { mutate } from "swr";
 
 export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
-  const { mutate } = useSWR(`/api/providers/${_id}`);
-  const [isSaving, setIsSaving] = useState(false);
-
   async function handleEditServiceCard() {
     try {
       const url = `/api/providers/${_id}`;
@@ -28,15 +24,12 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
     } catch (error) {
       console.error("Unexpected error:", error);
       // Add UI feedback for the user
-    } finally {
-      setIsSaving(false);
     }
   }
 
   const handleSave = async (event) => {
     event.preventDefault();
 
-    setIsSaving(true);
     const updatedData = await handleEditServiceCard();
     setEditedCard(updatedData); // Update the state with the updated data
   };
@@ -113,9 +106,7 @@ export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
         }
       />
 
-      <ServiceButton type="submit" disabled={isSaving}>
-        {isSaving ? "Saving..." : "Save"}
-      </ServiceButton>
+      <ServiceButton type="submit">Save</ServiceButton>
     </form>
   );
 }

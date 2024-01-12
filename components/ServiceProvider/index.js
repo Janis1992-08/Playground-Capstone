@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router";
 import EditForm from "@/pages/edit";
+import router from "next/router";
 
 const ServiceProviderWrapper = styled.div`
   border: 1px solid #ccc;
@@ -37,7 +37,6 @@ const DeleteButton = styled.button`
 export default function ServiceProvider({ card, isOnFavoritesPage }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [editedCard, setEditedCard] = useState(null);
-  const router = useRouter(); // Use useRouter to get the router object
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
