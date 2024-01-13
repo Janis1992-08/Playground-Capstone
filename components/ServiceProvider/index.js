@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import useSWR from "swr";
 import ReviewForm from "@/components/ReviewForm";
-import useLocalStorageState from "use-local-storage-state";
 import EditForm from "@/components/EditForm";
 import StarRating from "@/components/StarRating";
+import useSWR from "swr";
 
 const ServiceProviderWrapper = styled.div`
   display: flex;
@@ -65,18 +64,12 @@ const ShowContactButton = styled.button`
   margin: 10px;
 `;
 
-export default function ServiceProvider({ card, isOnFavoritesPage, onRating }) {
+export default function ServiceProvider({ card, isOnFavoritesPage }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [editedCard, setEditedCard] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviews, setReviews] = useLocalStorageState("reviews", {});
 
   const { mutate } = useSWR("/api/providers");
-
-  const onAddReview = (cardId, review) => {
-    const updatedReviews = { ...reviews, [cardId]: review };
-    setReviews(updatedReviews);
-  };
 
   const toggleContactInfo = () => {
     setShowContactInfo(!showContactInfo);
@@ -98,9 +91,9 @@ export default function ServiceProvider({ card, isOnFavoritesPage, onRating }) {
       });
 
       if (response.ok) {
-        await response.json(); // Ensure the response is fully read
+        await response.json();
 
-        mutate(); // Reload the page
+        mutate();
       } else {
         console.error(`Error: ${response.status}`);
       }
@@ -160,22 +153,18 @@ export default function ServiceProvider({ card, isOnFavoritesPage, onRating }) {
             {showReviewForm ? "Hide Review Form" : "Add Review"}
           </ReviewButton>
 
-          {showReviewForm && (
-            <ReviewForm
-              cardId={card.id}
-              onAddReview={onAddReview}
-              reviewButtonColor={card.reviewButtonColor}
-            />
-          )}
+          {showReviewForm && <ReviewForm card={card} />}
 
-          {reviews && reviews[card.id] && (
+          {card.reviews && (
             <article>
               <h2>Reviews:</h2>
-              <h3>{reviews[card.id]}</h3>
+              {card.reviews.map((review, id) => (
+                <h3 key={id}>{review}</h3>
+              ))}
             </article>
           )}
           <div>
-            <StarRating card={card} onRating={onRating} />
+            <StarRating card={card} />
           </div>
         </div>
       )}

@@ -2,7 +2,7 @@ import ServiceButton from "@/components/ServiceButton";
 import useSWR from "swr";
 
 export default function EditForm({ editedCard, setEditedCard, card: { _id } }) {
-  const { mutate } = useSWR(`/api/providers/${_id}`);
+  const { mutate } = useSWR("/api/providers");
 
   async function handleEditServiceCard() {
     try {

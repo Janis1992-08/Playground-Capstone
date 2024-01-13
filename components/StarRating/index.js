@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import useSWR from "swr";
 
 const StarWrapper = styled.label`
   position: relative;
@@ -27,15 +28,43 @@ const StyledButton = styled.button`
 
 const stars = Array.from({ length: 5 }, (_, index) => index + 1);
 
-const StarRating = ({ card, onRating }) => {
+const StarRating = ({ card }) => {
   const [hoverRating, setHoverRating] = useState(card.rating || 0);
   const [tempRating, setTempRating] = useState(0);
+
+  const { mutate } = useSWR("/api/providers");
 
   const handleStarHover = (selectedRating) => {
     if (!card.rating) {
       setHoverRating(selectedRating);
     }
   };
+
+  async function handleRating(providerId, rating) {
+    try {
+      const url = `/api/providers/${providerId}`;
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rating }), // Use card instead of editedCard
+      });
+
+      console.log("Server Response:", response);
+
+      if (response.ok) {
+        const updatedData = await response.json();
+
+        mutate();
+        return updatedData; // Return the updated data
+      } else {
+        console.error("Error updating provider:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
+  }
 
   const handleMouseLeave = () => {
     if (!card.rating) {
@@ -72,7 +101,7 @@ const StarRating = ({ card, onRating }) => {
       {!card.rating && tempRating > 0 && (
         <StyledButton
           type="button"
-          onClick={() => onRating(card.id, tempRating)}
+          onClick={() => handleRating(card._id, tempRating)}
         >
           Rate
         </StyledButton>

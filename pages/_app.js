@@ -61,14 +61,6 @@ export default function MyApp({ Component, pageProps }) {
     setTheme(newTheme);
   };
 
-  function handleRating(id, rating) {
-    setServiceCards(
-      serviceCards.map((service) =>
-        service.id === id ? { ...service, rating } : service
-      )
-    );
-  }
-
   function handleToggleFavorite(serviceCardId) {
     const isFavorite = favorites.includes(serviceCardId);
     if (isFavorite) {
@@ -88,7 +80,6 @@ export default function MyApp({ Component, pageProps }) {
           theme={theme}
           serviceCards={serviceCards}
           setServiceCards={setServiceCards}
-          onRating={handleRating}
           favorites={favorites}
           onToggleFavorite={handleToggleFavorite}
         />

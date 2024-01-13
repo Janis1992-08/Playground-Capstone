@@ -22,7 +22,9 @@ export default async function handler(request, response) {
   if (request.method === "PUT") {
     try {
       const updatedProvider = request.body;
-      await Provider.findByIdAndUpdate(id, updatedProvider);
+      await Provider.findByIdAndUpdate(id, updatedProvider, {
+        useFindAndModify: false,
+      });
       console.log("updatedProvider", updatedProvider);
       response.status(200).json({ status: `Provider successfully updated.` });
     } catch (error) {
@@ -33,12 +35,27 @@ export default async function handler(request, response) {
 
   if (request.method === "DELETE") {
     try {
-      await Provider.findByIdAndDelete(id);
+      await Provider.findByIdAndDelete(id, { useFindAndModify: false });
       response
         .status(200)
         .json({ status: `Provider ${id} successfully deleted.` });
     } catch (error) {
       console.error("Error deleting provider:", error);
+      response.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  if (request.method === "POST") {
+    try {
+      const { review } = request.body;
+      const provider = await Provider.findById(id);
+
+      // Assuming the 'reviews' field is an array of strings
+      provider.reviews.push(review);
+
+      await provider.save();
+      response.status(201).json({ status: "Review added successfully." });
+    } catch (error) {
+      console.error("Error adding review:", error);
       response.status(500).json({ error: "Internal Server Error" });
     }
   }
