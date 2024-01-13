@@ -3,6 +3,7 @@ import { categories } from "@/lib/data";
 import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
+import Router from "next/router";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -13,9 +14,12 @@ const FormWrapper = styled.form`
 `;
 
 const InputField = styled.input`
+  display: flex;
+  flex-direction: column;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  overflow: hidden;
 `;
 
 const SelectField = styled.select`
@@ -33,13 +37,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const Headline = styled.h1`
+const Headline = styled.h3`
   display: inline-block;
   padding: 5px 10px;
   border-radius: 5px;
   background-color: #007bff;
   color: #fff;
-  font-size: 20px;
   text-decoration: none;
   margin-bottom: 20px;
   transition: background-color 0.3s ease;
@@ -49,17 +52,19 @@ const Headline = styled.h1`
   }
 `;
 
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  skills: "",
+  needs: "",
+  email: "",
+  phone: "",
+  category: "",
+  subcategory: "",
+};
+
 export default function CreateServiceCardForm({}) {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    skills: "",
-    needs: "",
-    email: "",
-    phone: "",
-    category: "",
-    subcategory: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const { mutate } = useSWR("/api/providers/");
 
@@ -78,10 +83,9 @@ export default function CreateServiceCardForm({}) {
       },
       body: JSON.stringify(formData),
     });
-
     if (response.ok) {
-      const newServiceCard = await response.json();
       mutate();
+      Router.push("/");
     } else {
       throw new Error(`Error: ${response.statusText}`);
     }
@@ -91,16 +95,7 @@ export default function CreateServiceCardForm({}) {
     event.preventDefault();
     try {
       await handleAddServiceCards(formData);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        skills: "",
-        needs: "",
-        email: "",
-        phone: "",
-        category: "",
-        subcategory: "",
-      }); // reset form data
+      setFormData(initialFormData); // reset form data
     } catch (error) {
       console.error("Error:", error.message);
     }
@@ -121,6 +116,8 @@ export default function CreateServiceCardForm({}) {
           value={formData.firstName}
           onChange={(event) => handleChange(event)}
           required
+          minLength={3}
+          maxLength={15}
         />
         <label htmlFor="lastName">Last Name: </label>
         <InputField
@@ -130,6 +127,8 @@ export default function CreateServiceCardForm({}) {
           value={formData.lastName}
           onChange={(event) => handleChange(event)}
           required
+          minLength={3}
+          maxLength={15}
         />
         <label htmlFor="skills">Skills: </label>
         <InputField
@@ -139,6 +138,8 @@ export default function CreateServiceCardForm({}) {
           value={formData.skills}
           onChange={(event) => handleChange(event)}
           required
+          minLength={3}
+          maxLength={50}
         />
 
         <label htmlFor="needs">Needs: </label>
@@ -149,6 +150,8 @@ export default function CreateServiceCardForm({}) {
           value={formData.needs}
           onChange={(event) => handleChange(event)}
           required
+          minLength={3}
+          maxLength={50}
         />
 
         <label htmlFor="email">Email: </label>

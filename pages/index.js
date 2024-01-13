@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { categories } from "@/lib/data";
 import styled from "styled-components";
@@ -109,7 +109,7 @@ const Homepage = () => {
               >
                 {category.subcategories.map((subcategory) => (
                   <li key={subcategory.id} style={subcategoryStyle}>
-                    <Link href={`/categories/${subcategory.id}`}>
+                    <Link href={`/subcategories/${subcategory.id}`}>
                       {subcategory.name}
                     </Link>{" "}
                   </li>

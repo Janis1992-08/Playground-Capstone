@@ -1,10 +1,48 @@
 import { SWRConfig } from "swr";
 import GlobalStyle from "../styles";
 import useLocalStorageState from "use-local-storage-state";
+import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { ThemeProvider } from "styled-components";
+import { FiSun, FiMoon } from "react-icons/fi";
+import { lightTheme, darkTheme } from "../styles";
 
 const fetcher = (url) => fetch(url).then((response) => response.json());
 
+const SwitchLabel = styled.label`
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+`;
+
+const SwitchInput = styled.input`
+  margin-left: 10px;
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #3498db;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease;
+    transform: ${({ checked }) =>
+      checked ? "translateX(20px)" : "translateX(0)"};
+  }
+`;
+
 export default function MyApp({ Component, pageProps }) {
+  const [theme, setTheme] = useState("light");
   const [serviceCards, setServiceCards] = useLocalStorageState("serviceCards", {
     defaultValue: [],
   });
@@ -12,12 +50,24 @@ export default function MyApp({ Component, pageProps }) {
     defaultValue: [],
   });
 
-  /* function handleEditServiceCard(updatedServiceCard) {
-    const updatedCards = serviceCards.map((card) =>
-      card.id === updatedServiceCard.id ? updatedServiceCard : card
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    setTheme(newTheme);
+  };
+
+  function handleRating(id, rating) {
+    setServiceCards(
+      serviceCards.map((service) =>
+        service.id === id ? { ...service, rating } : service
+      )
     );
-    setServiceCards(updatedCards);
-  } */
+  }
 
   function handleToggleFavorite(serviceCardId) {
     const isFavorite = favorites.includes(serviceCardId);
@@ -29,17 +79,28 @@ export default function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyle />
       <SWRConfig value={{ fetcher }}>
         <Component
           {...pageProps}
+          toggleTheme={toggleTheme}
+          theme={theme}
           serviceCards={serviceCards}
           setServiceCards={setServiceCards}
+          onRating={handleRating}
           favorites={favorites}
           onToggleFavorite={handleToggleFavorite}
         />
+        <SwitchLabel onClick={toggleTheme}>
+          {theme === "light" ? <FiSun /> : <FiMoon />}
+          <SwitchInput
+            type="checkbox"
+            checked={theme === "dark"}
+            onChange={toggleTheme}
+          />
+        </SwitchLabel>
       </SWRConfig>
-    </>
+    </ThemeProvider>
   );
 }

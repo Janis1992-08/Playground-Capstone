@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
-import { categories } from "../../lib/data.js";
+import { categories } from "@/lib/data";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import ServiceProvider from "@/components/ServiceProvider/index.js";
@@ -60,17 +60,19 @@ const FilterLabel = styled.label`
 `;
 
 const SubcategoryPage = ({
+  fetcher,
   serviceCards,
   setServiceCards,
   favorites,
   onToggleFavorite,
+  onRating,
 }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
   const { id } = router.query;
   const { isReady } = router;
-  const { data } = useSWR("/api/providers");
+  const { data } = useSWR("/api/providers", fetcher);
 
   if (!data || !isReady) return <div>Loading...</div>;
 
@@ -149,6 +151,7 @@ const SubcategoryPage = ({
                 card={provider}
                 serviceCards={serviceCards}
                 setServiceCards={setServiceCards}
+                onRating={onRating}
               />
             </Card>
           ))}
