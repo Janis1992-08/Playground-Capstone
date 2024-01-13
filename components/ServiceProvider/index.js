@@ -68,6 +68,7 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [editedCard, setEditedCard] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   const { mutate } = useSWR("/api/providers");
 
@@ -77,6 +78,10 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
 
   const toggleReviewForm = () => {
     setShowReviewForm(!showReviewForm);
+  };
+
+  const toggleReviews = () => {
+    setShowReviews(!showReviews);
   };
 
   const handleOpenEditForm = () => {
@@ -155,7 +160,11 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
 
           {showReviewForm && <ReviewForm card={card} />}
 
-          {card.reviews && (
+          <ActionButton onClick={toggleReviews}>
+            {showReviews ? "Hide Reviews" : "Show Reviews"}
+          </ActionButton>
+
+          {showReviews && card.reviews && (
             <article>
               <h2>Reviews:</h2>
               {card.reviews.map((review, id) => (
