@@ -27,7 +27,7 @@ export default function ReviewForm({ card }) {
     try {
       const url = `/api/providers/${providerId}`;
       const response = await fetch(url, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -36,8 +36,7 @@ export default function ReviewForm({ card }) {
 
       if (response.ok) {
         const updatedData = await response.json();
-        console.log("Server Response:", response);
-        console.log("Updated Data:", updatedData);
+
         mutate();
         return updatedData; // Return the updated data
       } else {
