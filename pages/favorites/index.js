@@ -2,6 +2,8 @@ import ServiceProvider from "@/components/ServiceProvider";
 import styled from "styled-components";
 import FavoriteButton from "@/components/FavoriteButton";
 import Link from "next/link";
+import useSWR from "swr";
+import { useRouter } from "next/router";
 
 const Headline = styled.h1`
   color: #333;
@@ -34,15 +36,15 @@ const Card = styled.li`
   }
 `;
 
-const FavoritesPage = ({
-  favorites,
-  serviceCards,
-  setServiceCards,
-  onToggleFavorite,
-}) => {
-  const favoriteCards = serviceCards.filter((card) =>
-    favorites.includes(card.id)
-  );
+const FavoritesPage = ({ favorites, onToggleFavorite }) => {
+  const router = useRouter();
+  const { isReady } = router;
+  const { data } = useSWR("/api/providers");
+  if (!data || !isReady) return <div>Loading...</div>;
+
+  const favoriteCards = data
+    ? data.filter((card) => favorites.includes(card._id))
+    : [];
 
   return (
     <>
@@ -53,16 +55,14 @@ const FavoritesPage = ({
       <main>
         <CardWrapper>
           {favoriteCards.map((card) => (
-            <Card key={card.id}>
+            <Card key={card._id}>
               <FavoriteButton
-                onClick={() => onToggleFavorite(card.id)}
-                isFavorite={favorites.includes(card.id)}
+                onClick={() => onToggleFavorite(card._id)}
+                isFavorite={favorites.includes(card._id)}
               />
               <ServiceProvider
-                key={card.id}
+                key={card._id}
                 card={card}
-                serviceCards={serviceCards}
-                setServiceCards={setServiceCards}
                 isOnFavoritesPage={true}
               />
             </Card>

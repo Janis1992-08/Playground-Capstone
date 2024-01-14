@@ -59,13 +59,13 @@ const FilterLabel = styled.label`
   margin-right: 10px;
 `;
 
-const SubcategoryPage = ({ fetcher, favorites, onToggleFavorite }) => {
+const SubcategoryPage = ({ favorites, onToggleFavorite }) => {
   const [filterType, setFilterType] = useState("all");
   const [filterValue, setFilterValue] = useState("");
   const router = useRouter();
   const { id } = router.query;
   const { isReady } = router;
-  const { data } = useSWR("/api/providers", fetcher);
+  const { data } = useSWR("/api/providers");
 
   if (!data || !isReady) return <div>Loading...</div>;
 

@@ -35,6 +35,10 @@ const providerSchema = new Schema({
   reviews: {
     type: [String],
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
   category: {
     type: String,
     required: true,
