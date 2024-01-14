@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { lightTheme, darkTheme } from "../styles";
-import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((response) => response.json());
 
@@ -45,7 +44,6 @@ const SwitchInput = styled.input`
 export default function MyApp({ Component, pageProps }) {
   const [theme, setTheme] = useState("light");
   const [favorites, setFavorites] = useLocalStorageState("favorites", []);
-  const { data } = useSWR("/api/providers", fetcher);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "light";
@@ -58,26 +56,12 @@ export default function MyApp({ Component, pageProps }) {
     setTheme(newTheme);
   };
 
-  async function handleToggleFavorite(serviceCardId) {
+  function handleToggleFavorite(serviceCardId) {
     const isFavorite = favorites.includes(serviceCardId);
     if (isFavorite) {
-      const response = await fetch(`/api/providers/${serviceCardId}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setFavorites(favorites.filter((id) => id !== serviceCardId));
-      }
+      setFavorites(favorites.filter((id) => id !== serviceCardId));
     } else {
-      const response = await fetch(`/api/providers/${serviceCardId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ isFavorite: true }),
-      });
-      if (response.ok) {
-        setFavorites([...favorites, serviceCardId]);
-      }
+      setFavorites([...favorites, serviceCardId]);
     }
   }
 

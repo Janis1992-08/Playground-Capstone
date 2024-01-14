@@ -127,14 +127,14 @@ export default function ServiceProvider({ card, isOnFavoritesPage }) {
             <strong>Needs:</strong> {card.needs}
           </h3>
           {showContactInfo && (
-            <p>
+            <div>
               <h3>
                 <strong>Email:</strong> {card.email}
               </h3>
               <h3>
                 <strong>Phone:</strong> {card.phone}
               </h3>
-            </p>
+            </div>
           )}
           <ShowContactButton type="button" onClick={toggleContactInfo}>
             {showContactInfo ? "Hide Contact" : "Show Contact"}
